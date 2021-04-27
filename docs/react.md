@@ -22,6 +22,8 @@ function tick(){
           <h1>hello</h1>
           <h2>It is {}
         </div>
-    )
+    );
+    ReactDOM.render(element, document.getElementById('root'));
 }
+setInterval(tick, 1000)
 ```
