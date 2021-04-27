@@ -1,6 +1,8 @@
 # Overview
 [url](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/A_re-introduction_to_JavaScript)
 
+[push locale project to github](https://www.linuxidc.com/Linux/2017-11/148628.htm)
+
 TODO 2021-04-26 14:26:58 学习javaScript基础， 完成react基础部分学习，数据JSX语法
 
  javascript no inpt & output
@@ -190,6 +192,280 @@ for (var myLetVariable = 0; myLetVariable < 5; myLetVariable++){
  JavaScript 中语句块（blocks）是没有作用域的，只有函数有作用域。因此如果在一个复合语句中（如 if 控制结构中）使用 var 声明一个变量，那么它的作用域是整个函数（复合语句在函数中）。 但是从 ECMAScript Edition 6 开始将有所不同的， let 和 const 关键字允许你创建块作用域的变量。
 
 ## 运算符
+\+  \-  \* /  
++= -=等价 x = x operator y
+```
+x += 5; // x = x + 5
+```
+++ -- 表示变量的自增和自减
+
+\+ 可以用来连接字符串
+```
+"hello" + "world";  // hello world
+"3" + 4 + 5; // 345
+3 + 4 + "5"; // 75
+```
+== 类型自适应 !=
+```
+1 == "123" // true
+1 == true; // true
+
+```
+=== 不需要自动类型转换 !==
+```
+1 === true；    // false
+123 === "123";  // false
+```
+## 控制结构
+if else
+
+```
+var name = "kitname";
+if (name == "pupsos") {
+    name += "!";
+} else if (name == "kitname") {
+    name += "!!";
+} else {
+    name = "!" + name;
+}
+name == "kitname!!"; // true
+```
+while 循环和 do-while循环
+```
+while (true){
+    // 一个无线循环！  
+}
+
+var input;
+do {
+    input = get_input();
+} while(inputIsNotVaild(input))
+```
+for 循环
+```
+for (var i = 0; i < 5; i++) {
+    // 将会执行5次
+}
+```
+
+for ... for
+```
+for (let value of array) {
+
+}
+```
+for ... in
+```
+for (let property in object) {
+    // do something with object property
+}
+```
+&& 和 || 运算符使用短路逻辑( short-circuit logic), 是否会执行第二个语句(操作数)取决于第一个操作数的结果。 在需要访问某个对象的属性时，使用这个特性可以事先检测该对象是否为空：
+```
+var name == o && o.getName();
+```
+或用于缓存值（当错误值无效时）：
+```
+var name = cachedName || (cachedName = getName());
+```
+用于条件表达式的三元操作符
+```
+var allowed = (age > 18) ? "yes" : "no";
+```
+多重分支的switch 语句，基于一个数字或字符串的switch语句
+```
+switch(action){
+  case 'draw':
+    drawIt();
+    break;
+  case 'eat':
+    earIt();
+    break;
+  default:
+    doNothing();  
+}
+```
+## 对象 object
+简单理解 "名称-值"对，而不是键值对；现在ES 2015的(Map ), 比对象更接近键值对， 联想
+
++ Python 中的字典(Dictionary)
++ Perl 和 Ruby 中的散列/哈希（Hash）
++ C/C++ 中的散列表( Hash table)
++ Java 中的散列映射表( HashMap)
++ PHP 中的关联数组( Associative Array)
+
+“名称”部分是一个JavaScript字符串, "值"部分可以是任何JavaScript的数据类型---包括对象。
+
+创建空对象
+```
+var obj = new Object()
+var obj = {}; // 对象字面量 ( object literal)
+```
+Object Literal 用来在对象实例中定义一个对象
+```
+var obj = {
+    name: "Carrot",
+    _for: "Max", // 'for' 是保留字之一，使用'_for'代替
+    details: {
+        color: "orange",
+        size: 12
+    }
+}
+```
+对象的属性可以通过链式(chain) 表示方法进行访问:
+```
+obj.details.color;  // orange
+obj["details"]["size"]; // 12
+```
+下面的例子创建了一个对象原型， Person 和这个原型的实例, You。
+```
+function Person(name, age) {
+    this.name = name;
+    this.age = age;
+}
+
+// 定义一个对象
+var You = new Person('You', 24);
+```
+访问对象和赋值
+```
+// 点表示法(dot notation)
+obj.name = 'Simon';
+var name = obj.name;
+// 括号表示法
+obj['name'] = 'Simon';
+var name = obj['name'];
+// can use a variable to define a key
+var user = prompt('what is your key?')
+obj[user] = prompt('what is its value?')
+```
+ECMAScript2015开始。对象键可以在创建时使用括号表示法由变量定义。
+```
+{[phoneType]: 12345}
+
+OLD 
+var userPhone = {}; userPhone[phoneType] = 12345;
+```
+## 数组
+数组是一种特殊的对象。以数字为属性名，但只能通过[]来访问, 包含一个特俗----length属性,length(长度)属性。这个属性的值通常比数组最大索引大1。
+```
+传统方式创建数组：
+var a = new Array();
+a[0] = "a";
+a[1] = "b";
+a[2] = "c";
+a.length;   //3
+使用数组字面量(array literal)
+var a = ["a", "b", "c"];
+a.length;   //3 
+```
+Array.length 并不是总等于数组中元素的个数,数组的长度是比数组最大索引值多一的数。
+```
+var a = ["dog", "car", "fish"];
+a[100] = "fox";
+a.length;   // 101
+```
+遍历一个数组：
+```
+for (var i  = 0, i< a.length; i++>){
+    //Do something with a[i]
+}
+ES2015 for...of
+for(const currentValue of a){
+}
+想在数组后追加元素，只需要:
+a.push(item)
+```
+
+## 函数
+```
+function add(x, y){
+    var total = x + y;
+    return total;
+}
+add(2,3,4); // 5
+//将前两个值相加
+```
+built-in obj arguments()
+```
+function add() {
+    var sum = 0;
+    for (var i = 0, j = arguments.length; i < j; i++>){
+        sum += arguments[i];
+    }
+    return sum;
+};
+add(2,3,4,5); //14
+
+/average
+function avg(){
+    var sum = 0;
+    for (var i=0, j=arguments.length; i < j; i++) {
+        sum += arguments[i];
+    }
+    return sum / arguments.length;
+}
+avg(2,3,4,5);   // 3.5
+
+用剩余参数来替换arguments的使用
+...variable 
+
+function avg(...args){
+    var sum = 0;
+    for (let value of args) {
+        sum += value;
+    }
+    return sum / args.length;
+}
+
+avg(2,3,4,5);   // 3.5
+
+function avgArray(arr) {
+    var sum = 0;
+    for (var i=0, j=arr.length; i<j; i++){
+        sum += arr[i];
+    }
+    return sum / arr.length;
+}
+avgArray([2,3,4,5]); // 3.5
+
+
+avg.apply(null, [2,3,4,5]);     // 3.5
+
+```
+
+## 内部函数
+JavaScript 允许在一个函数内部定义函数，这一点我们在之前的 makePerson() 例子中也见过。关于 JavaScript 中的嵌套函数，一个很重要的细节是，它们可以访问父函数作用域中的变量：
+```
+function parentFunc() {
+  var a = 1;
+
+  function nestedFunc() {
+    var b = 4; // parentFunc 无法访问 b
+    return a + b;
+  }
+  return nestedFunc(); // 5
+}
+```
+## 闭包
+个闭包，就是 一个函数 与其 被创建时所带有的作用域对象 的组合。闭包允许你保存状态——所以，它们可以用来代替对象
+```
+function makeAdder(a) {
+  return function(b) {
+    return a + b;
+  }
+}
+var add5 = makeAdder(5);
+var add20 = makeAdder(20);
+add5(6); // ?
+add20(7); // ?
+
+```
+
+
+
+
+
 
 
 
