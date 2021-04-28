@@ -310,6 +310,91 @@ function FormattedDate(props) {
 }
 ```
 
+## 事件处理
++ React事件的命名采用小驼峰(cameCase),而不是纯小写
++ 使用JSX语法时你需要传入一个函数作为事件处理函数，而不是字符串。
+例如传统的HTML
+```
+<button onclick="activateLasers()"> balabala </button>
+```
+In React
+```
+<button onClick={activateLasers}> balabala </button>
+```
+另一个不同点，不能通过返回 false 的方式阻止默认行为。必须显示的使用 preventDefault
+例如传统HTML中阻止链接默认打开一个新页面
+传统的HTML中阻止链接默认打开一个新页面,
+```
+< a href="#" onclick="console.log('The link was clicked.'); return false">Clcik me</a>
+```
+In React 
+```
+function ActionLink(){
+  function handleClick(e) {
+    e.preventDefault();
+    console.log('The link was clicked.')
+  }
+
+  return (
+    <a href="#" onClick={handleClick}>
+      Click me
+    </a>
+  );
+}
+```
+e 是一个合成事件。
+
+当使用ES6 class 语法定义一个组件的时候，通常将事件处理函数声明为class中的方法。 例如
+```
+class Toggle extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {isToggleOn: true};
+
+    // this.handleClick.bind(this);
+
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick(){
+    this.setState(state => ({
+      isToggleOn: !state.isToggleOn
+    }));
+  }
+
+  render() {
+    return(
+      <button onClick={this.handleClick}>
+        {this.state.isToggleOn ? 'ON' : 'OFF'}
+      </button>
+    );
+  }
+}
+
+```
+JSX 回调函数中的this, 使用bind很麻烦，另外两种方式, [Function.prototype.bind](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_objects/Function/bind)和使用[箭头函数](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Functions/Arrow_functions)
+```
+class LoggingButton ext
+```
+
+## 向事件处理程序传递参数
+在循环中，通常我们会为事件处理函数传递额外的参数。例如，若id 是你要删除的哪一行的ID。
+React 的事件对象 e 会被作为第二个参数传递。如果通过箭头函数的方式，事件对象必须显式的进行传递，而通过 bind 的方式，事件对象以及更多的参数将会被隐式的进行传递。
+```
+箭头函数
+<button onClick={(e) => this.deleteRow(id, e)}>
+  Delete Row
+</button>
+
+function.prototype.bind
+
+<button onClick={this.deleteRow.bind(this, id)}>
+  Delete Row
+</button>
+
+```
+
+TODO 2021-04-28 14:35:07 什么是事件对象显示的传递和隐式的传递???
 
 
 

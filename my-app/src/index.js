@@ -5,43 +5,105 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 
-class Clock extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {date: new Date()};
-  }
+{/* <button onClick={(e) => this.deleteRow(id, e)}>
+  Delete Row
+</button>
 
-  //mountcomponentDidMount() 方法会在组件已经被渲染到 DOM 中后运行，所以，最好在这里设置计时器：
-  componentDidMount(){
-    this.timerID = setInterval(
-      () => this.tick(),
-      1000
-    );
-  }
-  //unmount
-  componentWillUnmount(){
-    clearInterval(this.timerID);
-  }
+<button onClick={this.deleteRow.bind(this, id)}>
+  Delete Row
+</button> */}
 
-  tick() {
-    this.setState({
-      date: new Date()
-    });
-  }
+// class LoggingButton extends React.Component {
+//   handleClick(){
+//     console.log('this is:', this);
+//   }
+  
+//   render(){
+//     // 此语法确保 `handleClick` 内的 `this` 已被绑定。
+//     return(
+//       <button onClick={() => this.handleClick()}>
+//       Click me
+//       </button>
+//     );
+//   }
+// }
 
-  render(){
-    return(
-      <div>
-        <h2>现在是 {this.state.date.toLocaleTimeString()}.</h2>
-      </div>
-    );
-  }
-}
+// class Toggle extends React.Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = {isToggleOn: true};
 
-ReactDOM.render(
-  <Clock />,
-  document.getElementById('root')
-);
+//     // this.handleClick.bind(this);
+
+//     this.handleClick = this.handleClick.bind(this);
+//   }
+
+//   handleClick(){
+//     this.setState(state => ({
+//       isToggleOn: !state.isToggleOn
+//     }));
+//   }
+
+//   render() {
+//     return(
+//       <button onClick={this.handleClick}>
+//         {this.state.isToggleOn ? 'ON' : 'OFF'}
+//       </button>
+//     );
+//   }
+// }
+
+
+
+// function ActionLink() {
+//   function handleClick(e) {
+//     e.prevenDefault();
+//     console.log("The link was clicked.")
+//   }
+//   return (  
+//     <a href="#" onClick={handleClick}>
+//       Click me
+//     </a>
+//   );
+// }
+
+// class Clock extends React.Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = {date: new Date()};
+//   }
+
+//   //mountcomponentDidMount() 方法会在组件已经被渲染到 DOM 中后运行，所以，最好在这里设置计时器：
+//   componentDidMount(){
+//     this.timerID = setInterval(
+//       () => this.tick(),
+//       1000
+//     );
+//   }
+//   //unmount
+//   componentWillUnmount(){
+//     clearInterval(this.timerID);
+//   }
+
+//   tick() {
+//     this.setState({
+//       date: new Date()
+//     });
+//   }
+
+//   render(){
+//     return(
+//       <div>
+//         <h2>现在是 {this.state.date.toLocaleTimeString()}.</h2>
+//       </div>
+//     );
+//   }
+// }
+
+// ReactDOM.render(
+//   <Clock />,
+//   document.getElementById('root')
+// );
 
 
 // class Clock extends React.Component {
@@ -99,13 +161,14 @@ ReactDOM.render(
 //   );
 // }
 
-// ReactDOM.render(
-//   <App />,
-//   document.getElementById('root')
-// );
+ReactDOM.render(
+  <App />,
+  // <LoggingButton />,
+  // <Toggle />,
+  document.getElementById('root')
+);
 
 // ReactDOM.render(
-//   element,
 //   <React.StrictMode>
 //     <App />
 //   </React.StrictMode>,
