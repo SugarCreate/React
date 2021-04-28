@@ -27,3 +27,292 @@ function tick(){
 }
 setInterval(tick, 1000)
 ```
+## 组件 & Props
+组件，类似于JavaScript函数。它接受任意的入参(即, 'prpos'), 并返回用于描述页面展示内容的React元素。
+
+### 函数组件与Class组件
+最简单的方式: 编写JavaScript函数：
+```
+function Welcome(props) {
+  return <h1>Hello, {props.name}</h1>;
+}
+
+===
+
+ES6
+
+class Welcome extends React.Component {
+  render(){
+    return <h1>Hello, {this.props.name}</h1>
+  }
+}
+```
+渲染组件
+```
+DOM 标签
+
+const element = <div />
+
+
+React 元素可以是用户自定义的组件：
+
+const element = <Welcome name="Sara" />;
+ 
+```
+当 React 元素为用户自定义组件时，它会将 JSX 所接收的属性（attributes）以及子组件（children）转换为单个对象传递给组件，这个对象被称之为 “props”。
+
+```
+function Welcome(props) {
+  return <h1> Helo, {props.name}</h1>;
+}
+
+const element = <Welcome name="Sara" />;
+ReactDOM.render(
+  element,
+  document.getElementById('root')
+)
+
+```
+1. 我们调用 ReactDOM.render() 函数，并传入 \<Welcome name="Sara" /> 作为参数。
+2. React 调用 Welcome 组件，并将 {name: 'Sara'} 作为 props 传入。
+3. Welcome 组件将 \<h1>Hello, Sara</h1> 元素作为返回值。
+4. React DOM 将 DOM 高效地更新为 \<h1>Hello, Sara</h1>。
+
+潜规则:  
+React会将以小写字母开头的组件视为原生DOM标签，例如\<div />表示一个HTML的div标签，而\<Welcome />则代表一个组件，并且需要在作用域内使用Welcome。
+
+### 组合组件
+组件可以在其输出中引用其他组件。这就可以让我们用同一组组件来抽象出任意层次的细节。 按钮, 表单, 对话框, 甚至整个屏幕的内容。
+例子： 我们可以创建一个可以多次渲染Welcome组件的App组件：
+```
+
+```
+### Props的只读性
+组件无论是使用函数声明还是通过class声明，都不能修改自身的props。
+```
+function  sum(a, b){
+  return a + b;
+}
+```
+纯函数，该函数不会尝试更改入参，且多次调用下相同的入参始终会返回相同的结果。
+```
+function withdraw(account, amount) {
+  account.total -= amount;
+}
+```
+React 有一个严格的规则：
+所有组件都必须像纯函数一样保护它们的props不被更改。
+
+应用程序的UI是动态的, 并会伴随着时间的推移而变化。这是就需要使用 "state",一种允许React 组件随用户操作、网络响应或者其他变化而更改输出内容。
+
+### State  和 生命周期
+State 与 props 类似，但是 state 是私有的，并且完全受控于当前组件。
+#### 将函数组件转换成class 组件
+1. 创建一个同名的ES6 class, 并且继承于React.Component。
+2. 添加一个空的render()方法。
+3. 将函数体移动到 render()方法之中。
+4. 在 render() 方法中使用 this.props 替换 props.
+5. 删除剩余的空函数声明。
+```
+class Clock extends React.Component {
+  render() {
+    return (
+      <div>
+      <h1>Hello, world!</h1>
+      <h2>It is {this.props.date.toLocaleTimeString()}.</h2>
+      </div>
+    )
+  }
+}
+
+```
+现在 Clock 组件被定义为 class，而不是函数。
+
+每次组件更新时 render 方法都会被调用，但只要在相同的 DOM 节点中渲染 \<Clock /> ，就仅有一个 Clock 组件的 class 实例被创建使用。这就使得我们可以使用如 state 或生命周期方法等很多其他特性。
+
+### 向class 组件中添加局部的state
+1. render()方法中的this.props.date 替换成 this.state.date:
+```
+class Clock extends React.Component {
+  render(){
+    return(
+      <div>
+        <h1></h1>
+        <h2>It is {this.state.date.toLcoalTimeString()}.</h2>
+      </div>
+    )
+  }
+}
+```
+2. 添加一个函数class 构造函数, 然后在该函数中为this.state赋初值。
+
+constructor方法是一个特殊的方法，这种方法用于创建和初始化一个由class创建的对象。一个类只能拥有一个名为 “constructor”的特殊方法。如果类包含多个constructor的方法，则将抛出 一个SyntaxError 。
+
+一个构造函数可以使用 super 关键字来调用一个父类的构造函数。
+```
+class Clock extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {date: new Date()};
+  }
+
+  render(){
+    return (
+      <div>
+        <h2>It is {this.state.date.toLocalTimeString()}.</h2>
+      </div>
+    )
+  }
+}
+```
+3. 移除<Clock />元素中的date属性：
+```
+ReactDOM.render(
+<Clock />,
+document.getElementById('root')
+);
+```
+```
+class Clock extends React.Component {
+  constructor(props) {    super(props);    this.state = {date: new Date()};  }
+  render() {
+    return (
+      <div>
+        <h1>Hello, world!</h1>
+        <h2>It is {this.state.date.toLocaleTimeString()}.</h2>      </div>
+    );
+  }
+}
+
+ReactDOM.render(
+  <Clock />,  document.getElementById('root')
+);
+```
+
+### 将生命周期方法添加到class 中
+在具有许多组件的应用程序中， 当组件被销毁时释放占用的资源是非常重要的。
+当Clock 组件第一次被渲染到DOM中的时候，就为其设置一个计时器，在React中被称为“挂载(mount)”
+同时,当DOM中的Clock组件被删除时，应该清除计时器。在React中被称为“卸载(unmount)”
+```
+class Clock extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {date: new Date()};
+  }
+
+  componentDidMount() {
+    this.timerID = setInterval(
+      () => this.tick(),
+      1000
+    );
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timerID);
+  }
+
+  tick() {    this.setState({      date: new Date()    });  }
+  render() {
+    return (
+      <div>
+        <h1>Hello, world!</h1>
+        <h2>It is {this.state.date.toLocaleTimeString()}.</h2>
+      </div>
+    );
+  }
+}
+
+ReactDOM.render(
+  <Clock />,
+  document.getElementById('root')
+);
+```
+
+    当 <Clock /> 被传给 ReactDOM.render()的时候，React 会调用 Clock 组件的构造函数。因为 Clock 需要显示当前的时间，所以它会用一个包含当前时间的对象来初始化 this.state。我们会在之后更新 state。
+    之后 React 会调用组件的 render() 方法。这就是 React 确定该在页面上展示什么的方式。然后 React 更新 DOM 来匹配 Clock 渲染的输出。
+    当 Clock 的输出被插入到 DOM 中后，React 就会调用 ComponentDidMount() 生命周期方法。在这个方法中，Clock 组件向浏览器请求设置一个计时器来每秒调用一次组件的 tick() 方法。
+    浏览器每秒都会调用一次 tick() 方法。 在这方法之中，Clock 组件会通过调用 setState() 来计划进行一次 UI 更新。得益于 setState() 的调用，React 能够知道 state 已经改变了，然后会重新调用 render() 方法来确定页面上该显示什么。这一次，render() 方法中的 this.state.date 就不一样了，如此以来就会渲染输出更新过的时间。React 也会相应的更新 DOM。
+    一旦 Clock 组件从 DOM 中被移除，React 就会调用 componentWillUnmount() 生命周期方法，这样计时器就停止了。
+
+### 正确使用State
+关于State的三件事
+
+1. 不要直接修改State，用setState():构造函数是唯一可以给 this.state 赋值的地方
+```
+//Wrong
+this.state.comment = 'Hello';
+
+// Correct
+this.setState({comment: 'hello'});
+```
+2. State 的更新可能是异步的
+this.props 和 this.state 可能会异步更新，所以你不要依赖他们的值来更新下一个状态。
+```
+// Worong 
+this.setState({
+  counter: this.state.counter + this.props.icrement,
+})
+```
+要解决这个问题，可以让 setState() 接收一个函数而不是一个对象。这个函数用上一个 state 作为第一个参数，将此次更新被应用时的 props 做为第二个参数：
+```
+this.setState((state, props) =>({
+  counter: state.counter + props.increment
+}));
+
+this.setState(function(state, props) {
+  return {
+    counter: state.counter + props.increment
+  };
+})
+```
+3. state 的更新会被合并
+当你调用 setState() 的时候，React 会把你提供的对象合并到当前的 state。
+```
+constructor(props) {
+  super(props);
+  this.state = {
+    posts: [],
+    comments: []
+  };
+}
+
+```
+可以分别调用 setState() 来单独地更新它们：
+```
+  componentDidMount() {
+    fetchPosts().then(response => {
+      this.setState({
+        posts: response.posts      });
+    });
+
+    fetchComments().then(response => {
+      this.setState({
+        comments: response.comments      });
+    });
+  }
+```
+这里的合并是浅合并，所以 this.setState({comments}) 完整保留了 this.state.posts， 但是完全替换了 this.state.comments
+
+## 数据是向下流动的
+
+不管是父组件或是子组件都无法知道某个组件是有状态的还是无状态的，并且它们也并不关心它是函数组件还是 class 组件。
+
+这就是为什么称 state 为局部的或是封装的的原因。除了拥有并设置了它的组件，其他组件都无法访问。
+
+组件可以选择把它的 state 作为 props 向下传递到它的子组件中：
+```
+<FormattedDate date={this.state.date} />
+```
+FormattedDate 组件会在其 props 中接收参数 date，但是组件本身无法知道它是来自于 Clock 的 state，或是 Clock 的 props，还是手动输入的：
+```
+function FormattedDate(props) {
+  return <h2>It is {props.date.toLocaleTimeString()}.</h2>;
+}
+```
+
+
+
+
+
+
+
