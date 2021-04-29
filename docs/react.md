@@ -425,6 +425,180 @@ ReactDOM.render(
 React 中的条件渲染和 JavaScript 中的一样，使用 JavaScript 运算符 if 或者条件运算符去创建元素来表现当前的状态，然后让 React 根据它们来更新 UI。
 ### 元素变量
 可以使用变量来存储,有条件的渲染组件的一部分。
+```
+
+function UserGreeting(props) {
+  return <h1>Welcome back!</h1>;
+}
+
+function GuestGreeting(props) {
+  return <h1>Please sign up.</h1>;
+}
+
+function Greeting(props) {
+  const isLoggedIn = props.isLoggedIn;
+  if (isLoggedIn) {
+    return <UserGreeting />;
+  }
+  return <GuestGreeting />;
+}
+
+function LoginButton(props) {
+  return(
+   <button onClick={props.onClick}> 
+     login 
+   </button> 
+  );
+}
+
+function LogoutButton(props) {
+  return (
+   <button onClick={props.onClick}>
+     logout
+   </button> 
+  );
+}
+
+// 有状态组件 LoginControl
+// 它根据当前的状态来渲染<LoginButton /> 或者<LogoutButton /> 同时渲染上一个示例中的<Greeting />
+
+class LoginControl extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleLoginClick = this.handleLoginClick.bind(this);
+    this.handleLogoutClick = this.handleLogoutClick.bind(this);
+    this.state = {isLoggedIn: false};
+  }
+
+  handleLogoutClick() {
+    this.setState({ isLoggedIn: false});
+  }
+
+  handleLoginClick() {
+    this.setState({ isLoggedIn: true});
+  }
+
+
+  render() {
+    const isLoggedIn = this.state.isLoggedIn;
+    let button;
+    if (isLoggedIn) {
+      button = <LogoutButton onClick={this.handleLogoutClick} />
+    } else {
+      button = <LoginButton onClick={this.handleLoginClick} />
+    }
+
+    return(
+      <div>
+        <Greeting isLoggedIn={isLoggedIn} />
+        {button}
+      </div>
+    );
+  }
+}
+
+ReactDOM.render(
+  <LoginControl />,
+  document.getElementById('root')
+);
+```
+### In JSX中的内联条件渲染方法
+#### 与运算符 &&
+通过花括号包裹代码，可以在JSX中嵌入任何表达式。这也包括JavaScript中的逻辑与(&&)运算符。
+```
+function Mailbox(props) {
+  const unreadMessages = props.unreadMessages;
+  return (
+    <div>
+      <h1>Hello!</h1>
+      {unreadMessages.length > 0 &&
+        <h2>
+          You have {unreadMessages.length} unread messages.
+        </h2>
+      }
+    </div>
+  );
+}
+
+const messages = ['React', 'Re: React', 'Re:Re: React','adda'];
+ReactDOM.render(
+  <Mailbox unreadMessages={messages} />,
+  document.getElementById('root')
+);
+```
+在 JavaScript 中，true && expression 总是会返回 expression, 而 false && expression 总是会返回 false。
+
+因此，如果条件是 true，&& 右侧的元素就会被渲染，如果是 false，React 会忽略并跳过它。
+
+#### 三目运算
+condition ? true: false。
+```
+render(){
+  return(
+    <div>
+      The use is <b>{isLoggedIn ? 'currently': 'not'}</b> logged in.
+    </div>
+
+    <div>
+    {isLoggedIn
+    ? <LogoutButton onClick={this.handleLogoutClick} />
+    : <LoginButton onClick={this.handleLoginClick} />
+    }
+    </div>
+  );
+}
+```
+#### 阻止组件渲染
+在极少数情况下，可能希望能隐藏组件,即使它已被其他组件渲染。可以直接
+让render 方法返回 null
+```
+function WarningBanner(props) {
+  if (!props.warn) { //2021-04-29 14:31:37 !在条件语句中什么含义
+    return null;
+  }
+
+  return (
+    <div className="warning">
+      Warning! 
+    </div>
+  )
+}
+
+class Page extends React.Component {
+  constructor(props) {
+    super(props); //2021-04-29 14:29:05 constructor函数中的super()作用是什么?
+    this.state = {showWarning: true};
+    this.handleToggleClick = this.handleToggleClick.bind(this);
+  }
+
+  handleToggleClick() {
+    this.setState(state => ({
+      showWarning: !state.showWarning
+    }));
+  }
+
+  render(){
+    return(
+      <div>
+        <WarningBanner warn={this.state.showWarning} />
+        <button onClick={this.handleToggleClick}>
+          {this.state.showWarning ? 'Hide': 'Show'}
+        </button>
+      </div>
+    );
+  }
+}
+// DOMs
+ReactDOM.render(
+  <Page />,
+  document.getElementById('root')
+)
+```
+
+## 列表 && Key
+
+
+
 
 
 

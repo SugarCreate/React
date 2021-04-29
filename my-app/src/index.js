@@ -4,80 +4,150 @@ import './index.css';
 // import App from './App';
 // import reportWebVitals from './reportWebVitals';
 
-function UserGreeting(props) {
-  return <h1>Welcome back!</h1>;
-}
-
-function GuestGreeting(props) {
-  return <h1>Please sign up.</h1>;
-}
-
-function Greeting(props) {
-  const isLoggedIn = props.isLoggedIn;
-  if (isLoggedIn) {
-    return <UserGreeting />;
+// WarningBanner
+// Page
+function WarningBanner(props) {
+  if (!props.warn) { //2021-04-29 14:31:37 !在条件语句中什么含义
+    return null;
   }
-  return <GuestGreeting />;
-}
 
-function LoginButton(props) {
-  return(
-   <button onClick={props.onClick}> 
-     login 
-   </button> 
-  );
-}
-
-function LogoutButton(props) {
   return (
-   <button onClick={props.onClick}>
-     logout
-   </button> 
-  );
+    <div className="warning">
+      Warning! 
+    </div>
+  )
 }
 
-// 有状态组件 LoginControl
-// 它根据当前的状态来渲染<LoginButton /> 或者<LogoutButton /> 同时渲染上一个示例中的<Greeting />
-
-class LoginControl extends React.Component {
+class Page extends React.Component {
   constructor(props) {
-    super(props);
-    this.handleLoginClick = this.handleLoginClick.bind(this);
-    this.handleLogoutClick = this.handleLogoutClick.bind(this);
-    this.state = {isLoggedIn: false};
+    super(props); //2021-04-29 14:29:05 constructor函数中的super()作用是什么?
+    this.state = {showWarning: true};
+    this.handleToggleClick = this.handleToggleClick.bind(this);
   }
 
-  handleLogoutClick() {
-    this.setState({ isLoggedIn: false});
+  handleToggleClick() {
+    this.setState(state => ({
+      showWarning: !state.showWarning
+    }));
   }
 
-  handleLoginClick() {
-    this.setState({ isLoggedIn: true});
-  }
-
-
-  render() {
-    const isLoggedIn = this.state.isLoggedIn;
-    let button;
-    if (isLoggedIn) {
-      button = <LogoutButton onClick={this.handleLogoutClick} />
-    } else {
-      button = <LoginButton onClick={this.handleLoginClick} />
-    }
-
+  render(){
     return(
       <div>
-        <Greeting isLoggedIn={isLoggedIn} />
-        {button}
+        <WarningBanner warn={this.state.showWarning} />
+        <button onClick={this.handleToggleClick}>
+          {this.state.showWarning ? 'Hide': 'Show'}
+        </button>
       </div>
     );
   }
 }
-
+// DOMs
 ReactDOM.render(
-  <LoginControl />,
+  <Page />,
   document.getElementById('root')
-);
+)
+
+
+
+
+
+
+
+
+
+// function Mailbox(prosp) {
+//   const unreadMessages = props.unreadMessages;
+//   return(
+//     <div>
+//       <h1>Hello</h1>
+//       <h2>
+//         You have {unreadMessages.length} unread messages.
+//       </h2>
+//     </div>
+//   )
+// }
+
+// const messages = ['React', 'Re: React', 'Re:Re:React'];
+// ReactDOM.render(
+//   <Mailbox unreadMessages={messages} />,
+//   document.getElementById('root')
+// )
+
+// function UserGreeting(props) {
+//   return <h1>Welcome back!</h1>;
+// }
+
+// function GuestGreeting(props) {
+//   return <h1>Please sign up.</h1>;
+// }
+
+// function Greeting(props) {
+//   const isLoggedIn = props.isLoggedIn;
+//   if (isLoggedIn) {
+//     return <UserGreeting />;
+//   }
+//   return <GuestGreeting />;
+// }
+
+// function LoginButton(props) {
+//   return(
+//    <button onClick={props.onClick}> 
+//      login 
+//    </button> 
+//   );
+// }
+
+// function LogoutButton(props) {
+//   return (
+//    <button onClick={props.onClick}>
+//      logout
+//    </button> 
+//   );
+// }
+
+// // 有状态组件 LoginControl
+// // 它根据当前的状态来渲染<LoginButton /> 或者<LogoutButton /> 同时渲染上一个示例中的<Greeting />
+
+// class LoginControl extends React.Component {
+//   constructor(props) {
+//     super(props);
+//     this.handleLoginClick = this.handleLoginClick.bind(this);
+//     this.handleLogoutClick = this.handleLogoutClick.bind(this);
+//     this.state = {isLoggedIn: false};
+//   }
+
+//   handleLogoutClick() {
+//     this.setState({ isLoggedIn: false});
+//   }
+
+//   handleLoginClick() {
+//     this.setState({ isLoggedIn: true});
+//   }
+
+
+//   render() {
+//     const isLoggedIn = this.state.isLoggedIn;
+//     let button;
+//     if (isLoggedIn) {
+//       button = <LogoutButton onClick={this.handleLogoutClick} />
+//     } else {
+//       button = <LoginButton onClick={this.handleLoginClick} />
+//     }
+
+//     return(
+//       <div>
+//         <Greeting isLoggedIn={isLoggedIn} />
+//         {button}
+//       </div>
+//     );
+//   }
+// }
+
+// ReactDOM.render(
+//   <LoginControl />,
+//   document.getElementById('root')
+// );
 
 // 2021-04-29 10:51:34 到底什么是ReactDOM, DOM根节点是什么
 
