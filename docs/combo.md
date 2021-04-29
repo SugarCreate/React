@@ -53,3 +53,26 @@ const element = {
     }
 };
 ```
+
+```
+git remote add origin https://github.com/SugarCreate/React.git
+git push -u origin master
+
+[root@VM-0-15-centos react]# git push -u origin master
+Username for 'https://github.com': SugarCreate
+Password for 'https://SugarCreate@github.com': 
+Enumerating objects: 63, done.
+Counting objects: 100% (63/63), done.
+Delta compression using up to 2 threads
+Compressing objects: 100% (59/59), done.
+Writing objects: 100% (63/63), 204.62 KiB | 8.18 MiB/s, done.
+Total 63 (delta 16), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (16/16), done.
+remote: 
+remote: Create a pull request for 'master' on GitHub by visiting:
+remote:      https://github.com/SugarCreate/React/pull/new/master
+remote: 
+To https://github.com/SugarCreate/React.git
+ * [new branch]      master -> master
+Branch 'master' set up to track remote branch 'master' from 'origin'.
+```

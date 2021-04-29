@@ -397,9 +397,35 @@ function.prototype.bind
 TODO 2021-04-28 14:35:07 什么是事件对象显示的传递和隐式的传递???
 
 ## 条件渲染
+在React中, 你可以创建不同的组件来封装各种你需要的行为。然后，依据引用的不同状态，可以只渲染对应状态下的部分内容
 
+```
+function UserGreeting(props) {
+  return <h1>Welcome back!</h1>;
+}
+
+function GuestGreeting(props) {
+  return <h1>Please sign up.</h1>;
+}
+
+function Greeting(props) {
+  const isLoggedIn = props.isLoggedIn;
+  if (isLoggedIn) {
+    return <UserGreeting />;
+  }
+  return <GuestGreeting />;
+}
+
+ReactDOM.render(
+  <Greeting isLoggedIn={false} />,
+  document.getElementById('root')
+);
+```
+
+React 中的条件渲染和 JavaScript 中的一样，使用 JavaScript 运算符 if 或者条件运算符去创建元素来表现当前的状态，然后让 React 根据它们来更新 UI。
 ### 元素变量
-可以使用变量来存储,有条件的渲染组件的一部分
+可以使用变量来存储,有条件的渲染组件的一部分。
+
 
 
 

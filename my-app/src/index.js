@@ -1,17 +1,120 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+// import App from './App';
+// import reportWebVitals from './reportWebVitals';
+
+function UserGreeting(props) {
+  return <h1>Welcome back!</h1>;
+}
+
+function GuestGreeting(props) {
+  return <h1>Please sign up.</h1>;
+}
+
+function Greeting(props) {
+  const isLoggedIn = props.isLoggedIn;
+  if (isLoggedIn) {
+    return <UserGreeting />;
+  }
+  return <GuestGreeting />;
+}
+
+function LoginButton(props) {
+  return(
+   <button onClick={props.onClick}> 
+     login 
+   </button> 
+  );
+}
+
+function LogoutButton(props) {
+  return (
+   <button onClick={props.onClick}>
+     logout
+   </button> 
+  );
+}
+
+// 有状态组件 LoginControl
+// 它根据当前的状态来渲染<LoginButton /> 或者<LogoutButton /> 同时渲染上一个示例中的<Greeting />
+
+class LoginControl extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleLoginClick = this.handleLoginClick.bind(this);
+    this.handleLogoutClick = this.handleLogoutClick.bind(this);
+    this.state = {isLoggedIn: false};
+  }
+
+  handleLogoutClick() {
+    this.setState({ isLoggedIn: false});
+  }
+
+  handleLoginClick() {
+    this.setState({ isLoggedIn: true});
+  }
 
 
-{/* <button onClick={(e) => this.deleteRow(id, e)}>
+  render() {
+    const isLoggedIn = this.state.isLoggedIn;
+    let button;
+    if (isLoggedIn) {
+      button = <LogoutButton onClick={this.handleLogoutClick} />
+    } else {
+      button = <LoginButton onClick={this.handleLoginClick} />
+    }
+
+    return(
+      <div>
+        <Greeting isLoggedIn={isLoggedIn} />
+        {button}
+      </div>
+    );
+  }
+}
+
+ReactDOM.render(
+  <LoginControl />,
+  document.getElementById('root')
+);
+
+// 2021-04-29 10:51:34 到底什么是ReactDOM, DOM根节点是什么
+
+
+
+
+
+
+
+// function UserGreeting(props) {
+//   return <h1>Welcome back!</h1>;
+// }
+
+// function GuestGreeting(props) {
+//   return <h1>Please sign up.</h1>;
+// }
+
+// function Greeting(props) {
+//   const isLoggedIn = props.isLoggedIn;
+//   if (isLoggedIn) {
+//     return <UserGreeting />;
+//   }
+//   return <GuestGreeting />;
+// }
+
+// ReactDOM.render(
+//   <Greeting isLoggedIn={false} />,
+//   document.getElementById('root')
+// );
+
+/* <button onClick={(e) => this.deleteRow(id, e)}>
   Delete Row
 </button>
 
 <button onClick={this.deleteRow.bind(this, id)}>
   Delete Row
-</button> */}
+</button> */
 
 // class LoggingButton extends React.Component {
 //   handleClick(){
@@ -161,12 +264,12 @@ import reportWebVitals from './reportWebVitals';
 //   );
 // }
 
-ReactDOM.render(
-  <App />,
-  // <LoggingButton />,
-  // <Toggle />,
-  document.getElementById('root')
-);
+// ReactDOM.render(
+//   <App />,
+//   // <LoggingButton />,
+//   // <Toggle />,
+//   document.getElementById('root')
+// );
 
 // ReactDOM.render(
 //   <React.StrictMode>
