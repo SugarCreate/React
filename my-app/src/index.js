@@ -1,24 +1,88 @@
 import React from 'react';
-import ReactDOM, { render } from 'react-dom';
+import ReactDOM from 'react-dom';
 import './index.css';
 // import App from './App';
 // import reportWebVitals from './reportWebVitals';
 
-function NumberList(props) {
-  const numbers = props.numbers;
-  return(
-    <url>
-      {numbers.map((number) => 
-        <ListItem 
-          key={number.toString()}
-          value={number}
-        />
-      )}
-    </url>
-  );
-};
+// class NameForm extends React.Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = {value: ''};
+
+//     this.handleChange = this.handleChange.bind(this);
+//     this.handleSubmit = this.handleSubmit.bind(this);
+//   }
+
+//   handleChange(event) {
+//     this.setState({value: event.target.value});
+//   }
+
+//   handleSubmit(event) {
+//     alert('A name was submitted: ' + this.state.value);
+//     event.preventDefault();
+//   }
+
+//   render() {
+//     return (
+//       <form onSubmit={this.handleSubmit}>
+//         <label>
+//           Name:
+//           <input type="text" value={this.state.value} onChange={this.handleChange} />
+//         </label>
+//         <input type="submit" value="Submit" />
+//       </form>
+//     );
+//   }
+// }
+
+class EssayForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {      value: '请撰写一篇关于你喜欢的 DOM 元素的文章.'    };
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleChange(event) {    this.setState({value: event.target.value});  }
+  handleSubmit(event) {
+    alert('提交的文章: ' + this.state.value);
+    event.preventDefault();
+  }
+
+  render() {
+    return (
+      <form onSubmit={this.handleSubmit}>
+        <label>
+          文章:
+          <textarea value={this.state.value} onChange={this.handleChange} />        </label>
+        <input type="submit" value="提交" />
+      </form>
+    );
+  }
+}
 
 
+ReactDOM.render(
+  // <NameForm />,
+  <EssayForm />,
+  document.getElementById('root')
+);
+//  TODO 2021-04-29 17:58:49  多个组件如何利用ReactDOM.render()渲染？
+
+
+// function NumberList(props) {
+//   const numbers = props.numbers;
+//   return(
+//     <url>
+//       {numbers.map((number) => 
+//         <ListItem 
+//           key={number.toString()}
+//           value={number}
+//         />
+//       )}
+//     </url>
+//   );
+// };
 
 // function NumberList(props) {
 //   const numbers = props.numbers;

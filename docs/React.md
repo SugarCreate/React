@@ -761,7 +761,70 @@ function NumberList(props) {
   );
 }
 ```
-## 表单gi
+## 表单
+
+在React里,表单元素通常会保持一些内部的state.
+```
+<form>
+  <label>
+  名字:
+  <input type="text" name="name" />
+  </label>
+  <input type="submit" value="提交"/>
+</form>
+```
+实现这种效果的标准方式是使用“受控组件”。
+
+### 受控组件
+在HTMl中, 表单元素(<input> , <textarea>和 <select>) 之类的表单元素通常自己维护state, 并根据用户输入进行更新。在React中，可变状态（mutable state） 通常保存在组件的state属性中, 并且只能通过使用 setState()来更新。
+
+把两者结合一起，使React的state称为唯一的“数据源”。渲染表单的React组件还控制着用户输入过程中表单发生的操作。被React以这种方式控制取值的表单输入元素就叫做“受控组件”
+
+例如，如果我们想让前一个示例在提交时候打印出名称，我们可以将表单写为受控组件：
+```
+class NameForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {value: ''};
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleChange(event) {
+    this.setState({value: event.target.value});
+  }
+
+  handleSubmit(event) {
+    alert('A name was submitted: ' + this.state.value);
+    event.preventDefault();
+  }
+
+  render() {
+    return (
+      <form onSubmit={this.handleSubmit}>
+        <label>
+          Name:
+          <input type="text" value={this.state.value} onChange={this.handleChange} />
+        </label>
+        <input type="submit" value="Submit" />
+      </form>
+    );
+  }
+}
+
+ReactDOM.render(
+  <NameForm />,
+  document.getElementById('root')
+);
+```
+由于在表单元素上设置了 value 属性，因此显示的值将始终为 this.state.value，这使得 React 的 state 成为唯一数据源。由于 handlechange 在每次按键时都会执行并更新 React 的 state，因此显示的值将随着用户输入而更新。
+
+对于受控组件来说，输入的值始终由 React 的 state 驱动。你也可以将 value 传递给其他 UI 元素，或者通过其他事件处理函数重置，但这意味着你需要编写更多的代码。
+
+#### textarea 标签
+
+
 
 
 
