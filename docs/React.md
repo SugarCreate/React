@@ -596,7 +596,171 @@ ReactDOM.render(
 ```
 
 ## 列表 && Key
+JavaScript 如何转化列表
+[map()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map)函数让数组中的每一项变双倍,得到一个doubled 并打印出来:
+```
+const numbers = [1,2,3,4,5];
+const doubled = numbers.map((number) => number *2);
+console.log(doubled); // [2,4,6,8,10];
+```
+### 渲染多个组件
 
+{}元素集合
+javascript中的map()方法遍历numbers 数组。将数组中的每个元素变成<li>标签,将得到的数组赋值给 listItems。
+```
+const numbers = [1,2,3,4];
+const listItems = numbers.map((number) =>
+  <li>{number}</li>
+)
+
+const numbers = [1,2,3,4,5];
+const listItems = numbers.map((number) => <li>{number}</li>);
+ReactDOM.render(
+  <ul>{number}</ul>,
+  document.getElementById('root')
+)
+```
+
+### 基础列表组件
+接收numbers 数组作为参数并输出一个元素列表。
+```
+function NumberList(props) {
+  const numbers = props.numbers;
+  const listItems = numbers.map((number) =>    <li>{number}</li>  );  return (
+    <ul>{listItems}</ul>  );
+}
+
+const numbers = [1, 2, 3, 4, 5];
+ReactDOM.render(
+  <NumberList numbers={numbers} />,  document.getElementById('root')
+);
+
+ a key should be provided for list items，意思是当你创建一个元素时，必须包括一个特殊的 key 属性
+
+
+ function NumberList(props) {
+  const numbers = props.numbers;
+  const listItems = numbers.map((number) => 
+    <li key={number.toString()}>
+      {number}
+    </li>
+  );
+  return(
+    <ul>{listItems}</ul>
+  );
+}
+
+const numbers = [1,2,3,4,5];
+
+ReactDOM.render(
+  <NumberList numbers={numbers} />,
+  document.getElementById('root')
+)
+```
+#### Key 
+帮助React识别哪些元素改变了，比如被添加或删除。应当在数组中的每一个元素赋予一个确定的标识。
+```
+const numbers = [1,2,3,4,5]
+const listItems = numbers.map((number) => 
+  <li key={number.toString()}>
+    {number}
+  </li>
+);
+```
+一个元素的 key 最好是这个元素在列表中拥有的一个独一无二的字符串。通常，我们使用数据中的 id 来作为元素的 key：
+```
+const todoItems = todos.map((todo) => 
+  <li key={todo.id}>
+    {todo.text}
+  </li>
+); 
+```
+当元素没有确定 id 的时候，万不得已你可以使用元素索引 index 作为 key：
+```
+const todoItems = todos.map((todo, index) =>
+  <li key={index}>
+    {todo.text}
+  </li>
+);
+```
+如果你选择不指定显式的 key 值，那么 React 将默认使用索引用作为列表项目的 key 值。
+
+#### 用key提取组件
+元素的 key 只有放在就近的数组上下文中才有意义。
+一个好的经验法则是：在 map() 方法中的元素需要设置 key 属性。
+比方说，如果你提取出一个 ListItem 组件，你应该把 key 保留在数组中的这个 \<ListItem /> 元素上，而不是放在 ListItem 组件中的 \<li> 元素上。
+
+### Key只是在兄弟节点之间必须唯一
+```
+function Blog(props) {
+  const sidebar =(
+    <ul>
+      {props.posts.map((post) => 
+        <li key={post.id}>
+          {post.title}
+        </li>
+      )}
+    </ul>
+  );
+
+  const content = props.posts.map((post) => 
+    <div key={post.id}>
+      <h3>{post.title}</h3>
+      <p>{post.content}</p>
+    </div>
+  );
+
+  return(
+    <div>
+      {sidebar}
+      <hr />    
+      {content}   
+    </div>
+  );
+}
+
+const posts = [
+  {id:1, title: 'hello world', content: 'Welcome to learning React!'},
+  {id:2, title: 'Installation', content: 'You can install React from npm.'},
+];
+
+ReactDOM.render(
+  <Blog posts={posts} />,
+  document.getElementById('root')
+);
+```
+key 会传递信息给React, 但不会传递给组件。
+如果组件中需要使用key属性的值, 请使用其他属性名显示传递这个值。
+```
+const content = posts.map((post) =>
+  <Post 
+    key={post.id}
+    id={post.id}
+    title={post.title}
+  />
+);
+Post 组件可以读出 props.id，但是不能读出 props.key。
+```
+#### 在 JSX 中嵌入 map() 
+何时需要为了可读性提取出一个变量，这完全取决于你。但请记住，如果一个 map() 嵌套了太多层级，那可能就是你提取组件的一个好时机。
+```
+function NumberList(props) {
+  const numbers = props.numbers;
+  const listItems = numbers.map((number) =>    <ListItem key={number.toString()}              value={number} />  );  return (
+    <ul>
+      {listItems}
+    </ul>
+  );
+}
+
+function NumberList(props) {
+  const numbers = props.numbers;
+  return (
+    <ul>
+      {numbers.map((number) =>        <ListItem key={number.toString()}                  value={number} />      )}    </ul>
+  );
+}
+```
 
 
 

@@ -1,60 +1,144 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM, { render } from 'react-dom';
 import './index.css';
 // import App from './App';
 // import reportWebVitals from './reportWebVitals';
 
+function NumberList(props) {
+  const numbers = props.numbers;
+  return(
+    <url>
+      {numbers.map((number) => 
+        <ListItem 
+          key={number.toString()}
+          value={number}
+        />
+      )}
+    </url>
+  );
+};
+
+
+
+// function NumberList(props) {
+//   const numbers = props.numbers;
+//   const listItems = numbers.map((number) =>{
+//     <ListItem key={number.toString()} value={number} />
+//   });
+
+//   return (
+//     <ul>
+//       {listItems}
+//     </ul>
+//   );
+// }
+
+// function Blog(props) {
+//   const sidebar =(
+//     <ul>
+//       {props.posts.map((post) => 
+//         <li key={post.id}>
+//           {post.title}
+//         </li>
+//       )}
+//     </ul>
+//   );
+
+//   const content = props.posts.map((post) => 
+//     <div key={post.id}>
+//       <h3>{post.title}</h3>
+//       <p>{post.content}</p>
+//     </div>
+//   );
+
+//   return(
+//     <div>
+//       {sidebar}
+//       <hr />    
+//       {content}   
+//     </div>
+//   );
+// }
+
+// const posts = [
+//   {id:1, title: 'hello world', content: 'Welcome to learning React!'},
+//   {id:2, title: 'Installation', content: 'You can install React from npm.'},
+// ];
+
+// ReactDOM.render(
+//   <Blog posts={posts} />,
+//   document.getElementById('root')
+// );
+
+// function NumberList(props) {
+//   const numbers = props.numbers;
+//   const listItems = numbers.map((number) => 
+//     <li key={number.toString()}>
+//       {number}
+//     </li>
+//   );
+//   return(
+//     <ul>{listItems}</ul>
+//   );
+// }
+
+// const numbers = [1,2,3,4,5];
+
+// ReactDOM.render(
+//   <NumberList numbers={numbers} />,
+//   document.getElementById('root')
+// )
+
+// const numbers = [1,2,3,4,5];
+// const listItems = numbers.map((number) => <li>{number}</li>);
+// ReactDOM.render(
+//   <ul>{number}</ul>,
+//   document.getElementById('root')
+// )
+
 // WarningBanner
 // Page
-function WarningBanner(props) {
-  if (!props.warn) { //2021-04-29 14:31:37 !在条件语句中什么含义
-    return null;
-  }
+// function WarningBanner(props) {
+//   if (!props.warn) { //2021-04-29 14:31:37 !在条件语句中什么含义
+//     return null;
+//   }
 
-  return (
-    <div className="warning">
-      Warning! 
-    </div>
-  )
-}
+//   return (
+//     <div className="warning">
+//       Warning! 
+//     </div>
+//   )
+// }
 
-class Page extends React.Component {
-  constructor(props) {
-    super(props); //2021-04-29 14:29:05 constructor函数中的super()作用是什么?
-    this.state = {showWarning: true};
-    this.handleToggleClick = this.handleToggleClick.bind(this);
-  }
+// class Page extends React.Component {
+//   constructor(props) {
+//     super(props); //2021-04-29 14:29:05 constructor函数中的super()作用是什么?
+//     this.state = {showWarning: true};
+//     this.handleToggleClick = this.handleToggleClick.bind(this);
+//   }
 
-  handleToggleClick() {
-    this.setState(state => ({
-      showWarning: !state.showWarning
-    }));
-  }
+//   handleToggleClick() {
+//     this.setState(state => ({
+//       showWarning: !state.showWarning
+//     }));
+//   }
 
-  render(){
-    return(
-      <div>
-        <WarningBanner warn={this.state.showWarning} />
-        <button onClick={this.handleToggleClick}>
-          {this.state.showWarning ? 'Hide': 'Show'}
-        </button>
-      </div>
-    );
-  }
-}
-// DOMs
-ReactDOM.render(
-  <Page />,
-  document.getElementById('root')
-)
-
-
-
-
-
-
-
-
+//   render(){
+//     return(
+//       <div>
+//         <WarningBanner warn={this.state.showWarning} />
+//         <button onClick={this.handleToggleClick}>
+//           {this.state.showWarning ? 'Hide': 'Show'}
+//         </button>
+//       </div>
+//     );
+//   }
+// }
+// // DOMs
+// ReactDOM.render(
+//   <Page />,
+//   document.getElementById('root')
+// )
 
 // function Mailbox(prosp) {
 //   const unreadMessages = props.unreadMessages;
