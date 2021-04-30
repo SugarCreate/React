@@ -1,6 +1,169 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+
+// 从Calculator 组件中抽离出 Temperature组件，然后为其添加一个新的scale prop ,它可以是 'c' 或者 "f"
+const scaleNames = {
+  c: 'Celsius',
+  f: 'Fahrenheit'
+};
+
+class TemperatureInput extends React.Component {
+  render() {
+    return(
+
+      <fieldset>
+        
+      </fieldset>
+    )
+  }
+}
+
+
+
+
+
+
+// // BoilingVerdict 组件接受 celsius 温度作为一个 prop，并据此打印出该温度是否足以将水煮沸的结果。
+// function BoilingVerdict(props) {
+//   if (props.celsius >= 100 ) {
+//     return <p>The water would boil.</p>;
+//   }
+//   return <p>The water would not boil.</p>;
+// }
+
+// // Calculator 组件 渲染一个用于用户输入温度的<input> ,并将值保存在 this.state.temperature中另外根据输入值渲染BoilingVerdict组件。
+// class Calculator extends React.Component {
+//   constructor(props) {
+//     super(props);
+//     this.handleChange = this.handleChange.bind(this);
+//     this.state = {temperature: ''};
+//   }
+
+//   handleChange(e) {
+//     this.setState({temperature: e.target.value});
+//   }
+//   render() {
+//     const temperature = this.state.temperature;
+//     return (
+//       <fieldset>
+//       <legend>Enter temperature in Celsius;</legend>
+//         <input 
+//           value={temperature}
+//           onChange={this.handleChange}
+//         />
+//         <BoilingVerdict />
+//       </fieldset>
+//     )
+//   }
+// }
+
+// ReactDOM.render(
+//   <Calculator />,
+//   document.getElementById('root')
+// )
+
+
+
+
+
+
+
+
+// class Reservation extends React.Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = {
+//       isGoing: false,
+//       numberOfGuests: 3
+//     };
+
+//     this.handleInputChange = this.handleInputChange.bind(this);
+//   }
+
+
+//   handleInputChange(event) {
+//     const target = event.target;
+//     const value = target.name === 'isGoing' ? target.checked : target.value;
+//     const name = target.name;
+
+//     this.setState({
+//       [name]: value
+//     });
+//   }
+
+//   render() {
+//     return (
+//       <form>
+//         <label>
+//             参与：
+//           <input
+//             name="isGoing"
+//             type="checkbox"
+//             checked={this.state.isGoing}
+//             onChange={this.handleInputChange}
+//           />
+//         <br />
+//         </label>
+//         <label>
+//           来宾人数：
+//           <input
+//             name="numberOfGuests"
+//             type="number"
+//             value={this.state.numberOfGuests}
+//             onChange={this.handleInputChange}
+//             />
+//         </label>
+//       </form>
+//     )
+//   }
+// }
+
+// ReactDOM.render(
+//   <Reservation />,
+//   document.getElementById('root')
+// )
+// class FlavorForm extends React.Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = {value:'cocount'};
+
+//     this.handleChange = this.handleChange.bind(this);
+//     this.handleSubmit =  this.handleSubmit.bind(this);
+//   }
+
+//   handleSubmit(event) {
+//     alert('你喜欢的风味是：' + this.state.value);
+//     event.preventDefault();
+//   }
+
+//   handleChange(event) {
+//     this.setState({value: event.target.value});
+//   }
+
+//   render() {
+//     return (
+//       <form onSubmit={this.handleSubmit}>
+//         <label>
+//           你喜欢的风味：
+//           <select value={this.handleSubmit} onChange={this.handleChange}>
+//             <option value="grapefruit">葡萄柚</option>
+//             <option>suancheng</option>
+//             <option>芒果</option>
+//             <option>椰子</option>
+//           </select>
+//         </label>
+//         <input type="submit" value="提交"></input>
+//       </form>
+//     )
+//   }
+// }
+
+// ReactDOM.render(
+//   <FlavorForm />,
+//   document.getElementById('root'),
+// )
+
 // import App from './App';
 // import reportWebVitals from './reportWebVitals';
 
@@ -35,38 +198,38 @@ import './index.css';
 //   }
 // }
 
-class EssayForm extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {      value: '请撰写一篇关于你喜欢的 DOM 元素的文章.'    };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
+// class EssayForm extends React.Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = {      value: '请撰写一篇关于你喜欢的 DOM 元素的文章.'    };
+//     this.handleChange = this.handleChange.bind(this);
+//     this.handleSubmit = this.handleSubmit.bind(this);
+//   }
 
-  handleChange(event) {    this.setState({value: event.target.value});  }
-  handleSubmit(event) {
-    alert('提交的文章: ' + this.state.value);
-    event.preventDefault();
-  }
+//   handleChange(event) {    this.setState({value: event.target.value});  }
+//   handleSubmit(event) {
+//     alert('提交的文章: ' + this.state.value);
+//     event.preventDefault();
+//   }
 
-  render() {
-    return (
-      <form onSubmit={this.handleSubmit}>
-        <label>
-          文章:
-          <textarea value={this.state.value} onChange={this.handleChange} />        </label>
-        <input type="submit" value="提交" />
-      </form>
-    );
-  }
-}
+//   render() {
+//     return (
+//       <form onSubmit={this.handleSubmit}>
+//         <label>
+//           文章:
+//           <textarea value={this.state.value} onChange={this.handleChange} />        </label>
+//         <input type="submit" value="提交" />
+//       </form>
+//     );
+//   }
+// }
 
 
-ReactDOM.render(
-  // <NameForm />,
-  <EssayForm />,
-  document.getElementById('root')
-);
+// ReactDOM.render(
+//   // <NameForm />,
+//   <EssayForm />,
+//   document.getElementById('root')
+// );
 //  TODO 2021-04-29 17:58:49  多个组件如何利用ReactDOM.render()渲染？
 
 

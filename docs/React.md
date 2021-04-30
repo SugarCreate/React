@@ -823,9 +823,134 @@ ReactDOM.render(
 对于受控组件来说，输入的值始终由 React 的 state 驱动。你也可以将 value 传递给其他 UI 元素，或者通过其他事件处理函数重置，但这意味着你需要编写更多的代码。
 
 #### textarea 标签
+```
+class EssayForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {      value: '请撰写一篇关于你喜欢的 DOM 元素的文章.'    };
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleChange(event) {    this.setState({value: event.target.value});  }
+  handleSubmit(event) {
+    alert('提交的文章: ' + this.state.value);
+    event.preventDefault();
+  }
+
+  render() {
+    return (
+      <form onSubmit={this.handleSubmit}>
+        <label>
+          文章:
+          <textarea value={this.state.value} onChange={this.handleChange} />        </label>
+        <input type="submit" value="提交" />
+      </form>
+    );
+  }
+}
+```
+#### select 标签
+```
+class FlavorForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {value: 'coconut'};
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleChange(event) {    this.setState({value: event.target.value});  }
+  handleSubmit(event) {
+    alert('你喜欢的风味是: ' + this.state.value);
+    event.preventDefault();
+  }
+
+  render() {
+    return (
+      <form onSubmit={this.handleSubmit}>
+        <label>
+          选择你喜欢的风味:
+          <select value={this.state.value} onChange={this.handleChange}>            <option value="grapefruit">葡萄柚</option>
+            <option value="lime">酸橙</option>
+            <option value="coconut">椰子</option>
+            <option value="mango">芒果</option>
+          </select>
+        </label>
+        <input type="submit" value="提交" />
+      </form>
+    );
+  }
+}
+```
+你可以将数组传递到 value 属性中，以支持在 select 标签中选择多个选项：
+```
+<select multiple={true} value={{['B', 'C']}}></select>
+```
+#### 文件input标签
+在HTML中, \<input type="file">, 允许用户从存储设备中选择一个或者多个文件，将其上传到服务器，或通过使用javaScript的 Filed API 进行控制。
+因为它的 value 只读，所以它是 React 中的一个非受控组件。
+```
+<input type="file" />
+```
+### 处理多个输入
+当需要处理多个input时， 我们可以给每个元素添加name熟悉，并让处理函数根据event.target.name 的值选择要执行的操作。
+```
+class Reservation extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isGoing: true,
+      numberOfGuests: 2
+    };
+
+    this.handleInputChange = this.handleInputChange.bind(this);
+  }
+
+  handleInputChange(event) {
+    const target = event.target;
+    const value = target.name === 'isGoing' ? target.checked : target.value;
+    const name = target.name;
+    this.setState({
+      [name]: value    });
+  }
+
+  render() {
+    return (
+      <form>
+        <label>
+          参与:
+          <input
+            name="isGoing" 
+            type="checkbox"
+            checked={this.state.isGoing}
+            onChange={this.handleInputChange} />
+        </label>
+        <br />
+        <label>
+          来宾人数:
+          <input
+            name="numberOfGuests"            type="number"
+            value={this.state.numberOfGuests}
+            onChange={this.handleInputChange} />
+        </label>
+      </form>
+    );
+  }
+}
+```
+受控输入空值
+在受控组件上指定value的props会阻止用户更改输入。
+
+包含验证、追踪访问字段以及处理表单提交的完整解决方案 [Formik](https://jaredpalmer.com/formik)
 
 
+## 状态提升
+通常，多个组件需要反映相同的变化数据，这时我们建议将共享状态提升到最近的共同父组件。
+例子：温度计算机,给定温度下是否会沸腾。
+```
 
+```
 
 
 
