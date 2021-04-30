@@ -2,23 +2,76 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-// 从Calculator 组件中抽离出 Temperature组件，然后为其添加一个新的scale prop ,它可以是 'c' 或者 "f"
-const scaleNames = {
-  c: 'Celsius',
-  f: 'Fahrenheit'
-};
 
-class TemperatureInput extends React.Component {
-  render() {
-    return(
 
-      <fieldset>
-        
-      </fieldset>
-    )
-  }
-}
 
+
+// // 从Calculator 组件中抽离出 Temperature组件，然后为其添加一个新的scale prop ,它可以是 'c' 或者 "f"
+
+// function toCelsius(fahrenheit) {
+//   return (fahrenheit - 32) * 5 / 9;
+// }
+
+// function toFahrenheit(celsius) {
+//   return (celsius *9 / 5) + 32;
+// }
+
+// // 我们将编写另一个函数，它接受字符串类型的 temperature 和转换函数作为参数并返回一个字符串。我们将使用它来依据一个输入框的值计算出另一个输入框的值。当输入 temperature 的值无效时，函数返回空字符串，反之，则返回保留三位小数并四舍五入后的转换结果：
+// // 例如，tryConvert('abc', toCelsius) 返回一个空字符串，而 tryConvert('10.22', toFahrenheit) 返回 '50.396'。
+// function tryConvert(temperature, convert) {
+//   const input = parseFloat(temperature);
+//   if(Number.isNaN(input)) {
+//     return '';
+//   }
+//   const output = convert(input);
+//   const rounded = Math.round(output * 1000) / 1000;
+//   return rounded.toString();
+// }
+
+
+// const scaleNames = {
+//   c: 'Celsius',
+//   f: 'Fahrenheit'
+// };
+
+// class TemperatureInput extends React.Component {
+//   constructor(props) {
+//     super(props);
+//     this.hadleChange = this.hadleChange.bind(this);
+//     this.state = {temperature: ''};
+//   }
+
+//   hadleChange(e) {
+//     this.setState({temperature: e.target.value});
+//   }
+
+//   render() {
+
+//     const temperature = this.state.temperature;
+//     const scale = this.props.scale;
+
+//     return(
+//       <fieldset>
+//         <legend>Enter temperature in {scaleNames[scale]}:</legend>
+//         <input 
+//           value = {temperature}
+//           onChange = {this.hadleChange}
+//         />
+//       </fieldset>
+//     )
+//   }
+// }
+
+// class Calculator extends React.Component {
+//   render() {
+//     return (
+//       <div>
+//         <TemperatureInput scale='c' />
+//         <TemperatureInput scale='f' />
+//       </div>
+//     );
+//   }
+// }
 
 
 

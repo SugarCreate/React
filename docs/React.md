@@ -949,9 +949,168 @@ class Reservation extends React.Component {
 通常，多个组件需要反映相同的变化数据，这时我们建议将共享状态提升到最近的共同父组件。
 例子：温度计算机,给定温度下是否会沸腾。
 ```
+const scaleNames = {
+  c: 'Celsius',
+  f: 'Fahrenheit'
+};
+
+class TemperatureInput extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleChange = this.handleChange.bind(this);
+    this.state = {temperature: ''};
+  }
+
+  handleChange(e) {
+    this.setState({temperature: e.target.value});
+  }
+
+  render() {
+    const temperature = this.state.temperature;
+    const scale = this.props.scale;
+    return (
+      <fieldset>
+        <legend>Enter temperature in {scaleNames[scale]}:</legend>
+        <input value={temperature}
+               onChange={this.handleChange} />
+      </fieldset>
+    );
+  }
+}
+
+class Calculator extends React.Component {
+  render() {
+    return (
+      <div>
+        <TemperatureInput scale="c" />
+        <TemperatureInput scale="f" />
+      </div>
+    );
+  }
+}
+
+ReactDOM.render(
+  <Calculator />,
+  document.getElementById('root')
+);
 
 ```
+编写转换函数
+首先，我们将编写两个可以在摄氏温度转华氏温度之间转换的函数:
+```
+function toCelsius() {
+  
+}
+```
+在React中,将多个组件中需要共享的state向上移动到它们的最近共同父组件中, 便可以实现共享state。这就是所谓的"状态提升" 。
+TODO 2021-04-30 14:37:28 如何将共享的state向上移动？
+任何可变数据应当只有一个相对应的唯一“数据源”
+```
+const scaleNames = {
+  c: 'Celsius',
+  f: 'Fahrenheit'
+};
 
+function toCelsius(fahrenheit) {
+  return (fahrenheit - 32) * 5 / 9;
+}
+
+function toFahrenheit(celsius) {
+  return (celsius * 9 / 5) + 32;
+}
+
+function tryConvert(temperature, convert) {
+  const input = parseFloat(temperature);
+  if (Number.isNaN(input)) {
+    return '';
+  }
+  const output = convert(input);
+  const rounded = Math.round(output * 1000) / 1000;
+  return rounded.toString();
+}
+
+function BoilingVerdict(props) {
+  if (props.celsius >= 100) {
+    return <p>The water would boil.</p>;
+  }
+  return <p>The water would not boil.</p>;
+}
+
+class TemperatureInput extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(e) {
+    this.props.onTemperatureChange(e.target.value);
+  }
+
+  render() {
+    const temperature = this.props.temperature;
+    const scale = this.props.scale;
+    return (
+      <fieldset>
+        <legend>Enter temperature in {scaleNames[scale]}:</legend>
+        <input value={temperature}
+               onChange={this.handleChange} />
+      </fieldset>
+    );
+  }
+}
+
+class Calculator extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleCelsiusChange = this.handleCelsiusChange.bind(this);
+    this.handleFahrenheitChange = this.handleFahrenheitChange.bind(this);
+    this.state = {temperature: '', scale: 'c'};
+  }
+
+  handleCelsiusChange(temperature) {
+    this.setState({scale: 'c', temperature});
+  }
+
+  handleFahrenheitChange(temperature) {
+    this.setState({scale: 'f', temperature});
+  }
+
+  render() {
+    const scale = this.state.scale;
+    const temperature = this.state.temperature;
+    const celsius = scale === 'f' ? tryConvert(temperature, toCelsius) : temperature;
+    const fahrenheit = scale === 'c' ? tryConvert(temperature, toFahrenheit) : temperature;
+
+    return (
+      <div>
+        <TemperatureInput
+          scale="c"
+          temperature={celsius}
+          onTemperatureChange={this.handleCelsiusChange} />
+        <TemperatureInput
+          scale="f"
+          temperature={fahrenheit}
+          onTemperatureChange={this.handleFahrenheitChange} />
+        <BoilingVerdict
+          celsius={parseFloat(celsius)} />
+      </div>
+    );
+  }
+}
+
+ReactDOM.render(
+  <Calculator />,
+  document.getElementById('root')
+);
+
+```
+## 小结 
+在React应用中, 任何可变数据应当只有一个相对应的唯一"数据源"。通常, state都是首先添加到需要渲染数据的组件中去。然后，如果其他组件也需要这个state, 那么你可以将它提升至这些组件的最近共同父组件中。你应当依靠自上而下的数据流，而不是尝试在不同组件间同步state。
+
+虽然提升state方式比双向绑定方式需要编写更多的"样板"代码, 但是带来的好处是，排查和隔离bug所需要的工作量将会变少。由于"存在"于组件中的任何state, 仅有组件自己能够修改它，因此bug的排查范围被大大缩减。此外，你可以使用自定义逻辑来拒绝或转换用户的输入。
+
+如果某些数据可以由props 或 state推导得出。那么它就不应存在于 state中。本例中我们没有将 celsiusValue 和 FahrenheitValue 一起保存。而是仅保存了最后修改的temperature 和它的 scale。这是因为另一个输入框的温度值始终可以通过这两个值以及组件的render()方法获得。这使得我们能够清除输入框内容, 亦或是，在不损失用户输入操作的输入框内数值精度的前提下对另一个输入框的转换数值做四舍五入的操作。
+[React开发者工具](https://github.com/facebook/react/tree/master/packages/react-devtools)
 
 
 
