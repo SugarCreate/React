@@ -776,7 +776,7 @@ function NumberList(props) {
 实现这种效果的标准方式是使用“受控组件”。
 
 ### 受控组件
-在HTMl中, 表单元素(<input> , <textarea>和 <select>) 之类的表单元素通常自己维护state, 并根据用户输入进行更新。在React中，可变状态（mutable state） 通常保存在组件的state属性中, 并且只能通过使用 setState()来更新。
+在HTMl中, 表单元素(\<input> , \<textarea>和 \<select>) 之类的表单元素通常自己维护state, 并根据用户输入进行更新。在React中，可变状态（mutable state） 通常保存在组件的state属性中, 并且只能通过使用 setState()来更新。
 
 把两者结合一起，使React的state称为唯一的“数据源”。渲染表单的React组件还控制着用户输入过程中表单发生的操作。被React以这种方式控制取值的表单输入元素就叫做“受控组件”
 
