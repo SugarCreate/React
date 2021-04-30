@@ -3,17 +3,45 @@ import ReactDOM from 'react-dom';
 import './index.css';
 
 
-//1 init |2 通过props传递数据, 将数据从Board 传递到 Square 组件中。在Board组件的renderSquare方法中，传递一个名为value的prop 到Square中：|3 给组件添加交互功能，点击格子就会出现一个弹出提示框
+// 1 init |2 通过props传递数据, 将数据从Board 传递到 Square 组件中。在Board组件的renderSquare方法中，传递一个名为value的prop 到Square中：|3 给组件添加交互功能，点击格子就会出现一个弹出提示框 |4.我们希望Square可以记住它被点击过，然后使用”X“来填充对应的方格。 |5.状态提升：个 Square 组件都维护了游戏的状态。我们可以把所有 9 个 Square 的值放在一个地方，这样我们就可以判断出胜者了。
 
-//  父组件传递给子组件 this.props.value
+// 父组件传递给子组件 this.props.value
+
+// 为了少输入代码，同时为了避免 this 造成的困扰，我们在这里使用箭头函数 来进行事件处理，如下所示：注意：此处使用了 onClick={() => alert('click')} 的方式向 onClick 这个 prop 传入一个函数。 React 将在单击时调用此函数。但很多人经常忘记编写 () =>，而写成了 onClick={alert('click')}，这种常见的错误会导致每次这个组件渲染的时候都会触发弹出框。
+
+// 使用state 来实现所谓"记忆功能"。构造函数中设置this.state来初始化state。this.state应该被视为一个组件的私有属性。this.state中存储当前每个方格(Squaer)的值,并在被点击时改变这个值。
+// 在 <button> 标签中，把 this.props.value 替换为 this.state.value。
+// 将 onClick={...} 事件监听函数替换为 onClick={() => this.setState({value: 'X'})}。
+// 为了更好的可读性，将 className 和 onClick 的 prop 分两行书写。
+//在 Square 组件 render 方法中的 onClick 事件监听函数中调用 this.setState，我们就可以在每次 <button> 被点击的时候通知 React 去重新渲染 Square 组件。组件更新之后，Square 组件的 this.state.value 的值会变为 'X'，因此，我们在游戏棋盘上就能看见 X 了。点击任意一个方格，X 就会出现了。
+
 
 // Structs Game/Board/Square
 
 class Square extends React.Component {
+// 在 JavaScript class 中，每次你定义其子类的构造函数时，都需要调用 super 方法。因此，在所有含有构造函数的的 React 组件中，构造函数必须以 super(props) 开头。
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: null,
+    };
+  }
+
   render() {
     return(
-      <button className="square">
-        {this.props.value}
+      // <button className="square" onClick={function() {
+      //   alert('click');
+      // }}>
+      //   {this.props.value}
+      // </button>
+
+      // <button className="square" onClick={() =>
+      //   alert('click')}>
+      //   {this.props.value}
+      // </button>
+            
+      <button className="square" onClick={() => this.setState({value: 'x'})}>
+        {this.state.value}
       </button>
     );
   }
