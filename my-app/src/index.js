@@ -16,6 +16,8 @@ import './index.css';
 //在 Square 组件 render 方法中的 onClick 事件监听函数中调用 this.setState，我们就可以在每次 <button> 被点击的时候通知 React 去重新渲染 Square 组件。组件更新之后，Square 组件的 this.state.value 的值会变为 'X'，因此，我们在游戏棋盘上就能看见 X 了。点击任意一个方格，X 就会出现了。
 
 
+//所有的 state 状态数据存储在 Board 父组件当中。之后 Board 组件可以将这些数据通过 props 传递给各个 Square 子组件，正如上文我们把数字传递给每一个 Square 一样。
+
 // Structs Game/Board/Square
 
 class Square extends React.Component {
@@ -49,8 +51,22 @@ class Square extends React.Component {
 
 
 class Board extends React.Component{
+  // // this.state.squaers
+  // [
+  //   'O', null, 'X',
+  //   'X', 'X', 'O',
+  //   'O', null, null,
+  // ]
+  constructor(props) {
+    super(props);
+    this.state = {
+      squaers: Array(9).fill(null),
+    };
+  }
+
   renderSquare(i) {
-    return <Square value={i}/>;
+    // return <Square value={i}/>;
+    return <Square value={this.state.squaers[i]} />;
   }
 
   render() {

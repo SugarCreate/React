@@ -1112,7 +1112,8 @@ ReactDOM.render(
 如果某些数据可以由props 或 state推导得出。那么它就不应存在于 state中。本例中我们没有将 celsiusValue 和 FahrenheitValue 一起保存。而是仅保存了最后修改的temperature 和它的 scale。这是因为另一个输入框的温度值始终可以通过这两个值以及组件的render()方法获得。这使得我们能够清除输入框内容, 亦或是，在不损失用户输入操作的输入框内数值精度的前提下对另一个输入框的转换数值做四舍五入的操作。
 [React开发者工具](https://github.com/facebook/react/tree/master/packages/react-devtools)
 
-
-
+### 奇淫巧计
+当你遇到需要同时获取多个子组件数据，或者两个组件之间需要相互通讯的情况时，需要把子组件的 state 数据提升至其共同的父组件当中保存。之后父组件可以通过 props 将状态数据传递到子组件当中。这样应用当中所有组件的状态数据就能够更方便地同步共享了。
+将组件的 state 提升到父组件的情形在重构 React 组件时经常会遇到
 
 
