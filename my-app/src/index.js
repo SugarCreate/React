@@ -2,11 +2,18 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
+
+//1 init |2 通过props传递数据, 将数据从Board 传递到 Square 组件中。在Board组件的renderSquare方法中，传递一个名为value的prop 到Square中：|3 给组件添加交互功能，点击格子就会出现一个弹出提示框
+
+//  父组件传递给子组件 this.props.value
+
+// Structs Game/Board/Square
+
 class Square extends React.Component {
   render() {
     return(
       <button className="square">
-        {/* \TODO */}
+        {this.props.value}
       </button>
     );
   }
@@ -15,7 +22,7 @@ class Square extends React.Component {
 
 class Board extends React.Component{
   renderSquare(i) {
-    return <Square />;
+    return <Square value={i}/>;
   }
 
   render() {
