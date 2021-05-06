@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Table, Popconfirm, Button } from 'antd';
 
 
-const ProductList = (onDelete, products) => {
+const ProductList = ({ onDelete, products }) => {
     const columns = [{
         title: 'Name',
         dataIndex: 'name',
@@ -25,7 +25,7 @@ const ProductList = (onDelete, products) => {
     );
 };
 
-ProductList.PropTypes = {
+ProductList.propTypes = {
     onDelete: PropTypes.func.isRequired,
     products: PropTypes.array.isRequired,
 };
