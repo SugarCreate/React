@@ -1,0 +1,1 @@
+route.js |路由------> components |UI-------> models.js |数据和逻辑
