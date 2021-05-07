@@ -388,7 +388,140 @@ app.model({
 });
 ```
 异步请求
+基于wahtwg-fetch
+GET 和 POST
+```
+import request from '../util/request';
+// GET 
+request('/api/todos');
 
+// POST
+request('/api/todos', {
+    method: 'POST',
+    body: JSON.stringify({ a: 1 }),
+});
+```
+统一错误处理
+```
+{
+    status： 'error',
+    message: '',
+}
+```
+编辑 utils/request.js, 加入以下中间件
+```
+function parseErrorMessage({ data }) {
+    const { status, message } = data;
+    if ( status === 'error'){
+        throw new Error(message);
+    }
 
+    return { data };
+}
+```
+这类错误就会走到 onError hook里
+<!-- TODO 2021-05-07 14:07:03 什么是 onError 的hook? -->
 ## Subscription
+
+subscription 是订阅， 用于订阅一个数据源, 然后根据需要去 dispatch 响应的 action。 数据源可以是当前的时间、服务器的 websocket连接，keyboard 输入、geolocation变换、history路由变化等等。
+格式 ({ dispatch, history }) => unsubscribe 。
+
+异步数据初始化
+当用户进入 /users 页面时，触发 action users/fetch 加载用户数据
+```
+app.model({
+    subscriptions: {
+        setup({ dispatch, history }) {
+            history.listen({ pathname }) => {
+                if (pathname === '/users') {
+                    dispatch({
+                        type: 'users/fetch',
+                    });
+                },
+            },
+        },
+    },
+});
+```
+
+如果url规则比较复杂, 比如 /users/:userId/search, 那么匹配和userId的部分获取会比较麻烦。这时候推荐使用 [path-to-regexp](https://github.com/pillarjs/path-to-regexp)
+```
+import pathToRegexp from 'path-to-regexp';
+
+// in subscription
+const match = pathToRegexp('/users/:userId/search').exec(pathname);
+if (match) {
+    const userId = match[1];
+    // dispacth action with userId
+}
+```
+
 ## Router
+Route Components
+./src/routes/ ./src/routert.js
+
+通过connect绑定数据
+```
+import { connect } from 'dva';
+function App() {
+    function mapStateToProps(state, ownProps) {
+        return {
+            users: state.users,
+        };
+    }
+}
+
+export default connect(mapStateToProps)(App);
+
+```
+在App里就有了 dispatch 和 users 两个属性
+
+Injected Props(e.g.location) 
+
+Route Component 会有额外的props用以获取路由信息
++ location
++ params
++ children
+
+基于 action 进行页面跳转
+```
+import { routerRedux } from 'dva/router';
+
+// Inside Effects
+yield put(routerRedux.push('/logout'));
+
+// Outside Effects
+dispatch(routerRedux.push('/logout'));
+
+//With query 
+
+routerRedux.push({
+    pathname: '/logout',
+    query: {
+        page: 2,
+    },
+});
+
+```
+## dva配置
++ Redux Middleware
+比如要添加 redux-logger 中间件:
+```
+import createLogger from 'redux-logger';
+const app = dva({
+    onAction: createLogger(),
+});
+onAction支持数组，可同时传入多个中间件
+```
+
+切换history 为browerHistory
+```
+npm install --save history
+```
+修改入口文件
+```
+import createHistory from 'history/createBrowerHistory';
+const app = dva({
+    history: createHistory(),
+});
+```
