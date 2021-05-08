@@ -281,3 +281,51 @@ function HomePage() {
 
 HomePage.title = 'Home Page';
 ```
+
+页面跳转
+在 umi 里, 页面之间跳转由两种方式：声明式和命令式。
+声明式
+通过Link使用, 通常作为React组件使用
+```
+import { Link } from 'umi';
+export default() => (
+    <Link to="/list">Go to list page</Link>
+)
+```
+命令式
+通过history使用，通常在事件处理中被调用
+```
+import { history } from 'umi';
+
+function goToListPage() {
+    history.push('/list');
+}
+```
+也可以直接从组件的属性中取得history
+```
+export default (props) => (
+    <Button onClick={() => props.history.push('/list');}>Go to list Page</button>
+)
+```
+## API 
+history
+可用于获取当前路由信息
+```
+import { history } from 'umi';
+
+// history 栈里的实体个数
+console.log(history.length);
+
+// 当前history 跳转 action , 有PUSH 、REPLACE 和 POP 三种类型
+console.log(history.action);
+
+// location 对象, 包含 pathname、search 和 hash 
+console.log(history.location.pathname)
+history.loaction.search
+history.loaction.hash
+```
+路由
+Link
+```
+
+```
