@@ -1,1 +1,14 @@
 https://www.yuque.com/lantiantianlan/qys4em/hninnx
+
+
+https://blog.csdn.net/weixin_38187317/article/details/84782923
+1 加参数
+
+npm install --ignore-scripts
+
+--ignore-scripts表示npm将不会运行在package.json中指定的scripts脚本
+
+2 更换数据源
+
+npm install chromedriver --chromedriver_cdnurl=http://cdn.npm.taobao.org/dist/chromedriver
+ install chromedriver --chromedriver_cdnurl=http://cdn.npm.taobao.org/dist/chromedriver
