@@ -4,6 +4,8 @@
         "build": "umi build"
     },
     "devDependencies": {
-        "umi": "^3.4.20"
+        "umi": "^3.4.20",
+        "antd": "^4.15.6",
+        "umi-plugin-react": "^1.15.8"
     }
 }
