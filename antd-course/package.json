@@ -2,5 +2,8 @@
     "scripts": {
         "dev": "umi dev",
         "build": "umi build"
+    },
+    "devDependencies": {
+        "umi": "^3.4.20"
     }
 }
