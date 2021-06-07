@@ -442,3 +442,146 @@ list.copy()
 >>> fruits.pop()
 'pear'
 像 insert ，remove 或者 sort 方法，只修改列表，没有打印出返回值——它们返回默认值 None 。
+
+#### 列表作为栈使用
+添加一个元素到堆栈的顶端，使用append()。要从堆栈顶部取出一个元素，使用pop(), 不用指定索引
+
+>>> stack = [3, 4, 5]
+>>> stack.append(6)
+>>> stack.append(7)
+>>> stack
+[3, 4, 5, 6, 7]
+>>> stack.pop()
+7
+>>> stack
+[3, 4, 5, 6]
+>>> stack.pop()
+6
+>>> stack.pop()
+5
+>>> stack
+[3, 4]
+
+
+#### 列表作为队列使用
+“先进先出”，低效。
+因为在列表的末尾添加和弹出元素非常快，但是在列表的开头插入或弹出元素却很慢 (因为所有的其他元素都必须移动一位)。
+
+
+
+若要实现一个队列，可使用 collections.deque，它被设计成可以快速地从两端添加或弹出元素。
+
+#### 列表推导式
+更简单的创建列表的方法。 常见的用法式把某种操作应用于序列或可迭代对象的每个元素上。然后使用其结果来创建列表，或者通过满足某些特定条件元素来创建子序列。
+squares = []
+for x in range(10)
+    suqares.append(x**2)
+suqares
+suqares = list(map(lambda x: x**2, range(10)))
+===
+squares = [x**2 for x in range(10)]
+如果表达式是一个元组，必须加上括号
+vec = [-4, -2, 0, 2, 4]
+#create a new list with the values doubled
+[x*2 for x in vec]
+[x for x in vec if x >=0 ]
+[abs(x), for x in vec]
+
+#flatten a list using a listcomp with two 'for'
+vec =[[1,2,3], [4,5,6], [7,8,9]]
+[num for elem in vec for num in elem ]
+[1,2,3,4,5,6,7,8,9]
+
+列表推导式可以使用复杂的表达式和嵌套函数
+
+for math import pi
+[str(round(pi,i)) for i in range(1, 6)]
+#### 嵌套的列表推导式
+列表推导式中的初始表达式可以是任何表达式，包括一个列表推导式
+matrix = [
+    [1,2,3,4],
+    [5,6,7,8],
+    [9,10,11,12]
+]
+
+[[row[i] for row in matrix] for i in range(4)]
+====
+transposed = []
+for i in range(4):
+    transposed.append([row[i] for row in matrix])
+实际应用中，使用内置函数去组成复杂的流程语句。zip()
+list(zip(*matrix))
+[(1,5,9),(2,6,10),(3,7,11),(4,8,12)]
+解包参数
+
+#### 元组和序列
+序列类型：list tuple range
+一个元组由几个逗号隔开的值组成。
+t = 123,5432,'hello'
+t[0]
+>>>12345
+元组在输出时总是被圆括号包围的，以便正确表示嵌套元组。输入时圆括号可有可无，不过经常会是必须的（如果这个元组是一个更大的表达式的一部分）。给元组中的一个单独的元素赋值是不允许的，当然你可以创建包含可变对象的元组，例如列表。
+
+虽然元组可能看起来与列表很像，但它们通常是在不同的场景被使用，并且有着不同的用途。元组是 immutable ，其序列通常包含不同种类的元素，并且通过解包（这一节下面会解释）或者索引来访问（如果是 namedtuples 的话甚至还可以通过属性访问）。列表是 mutable ，并且列表中的元素一般是同种类型的，并且通过迭代访问。
+
+### 集合
+集合是由不重复元素组成的无序的集。它的基本用法包括成员检测和消除重复元素。集合对象也支持像 联合，交集，差集，对称差分等数学运算。
+
+{} 或 set() 可以创建集合
+创建空集合只能用set()
+{}创建一个空字典
+>>> basket = {'apple', 'orange', 'apple', 'pear', 'orange', 'banana'}
+>>> print(basket)                      # show that duplicates have been removed
+{'orange', 'banana', 'pear', 'apple'}
+>>> 'orange' in basket                 # fast membership testing
+True
+>>> 'crabgrass' in basket
+False
+
+>>> # Demonstrate set operations on unique letters from two words
+...
+>>> a = set('abracadabra')
+>>> b = set('alacazam')
+>>> a                                  # unique letters in a
+{'a', 'r', 'b', 'c', 'd'}
+>>> a - b                              # letters in a but not in b
+{'r', 'd', 'b'}
+>>> a | b                              # letters in a or b or both
+{'a', 'c', 'r', 'd', 'b', 'm', 'z', 'l'}
+>>> a & b                              # letters in both a and b
+{'a', 'c'}
+>>> a ^ b                              # letters in a or b but not both
+{'r', 'd', 'b', 'm', 'z', 'l'}
+
+## 字典
+联合内存 或 联合数组
+字典以关键字为索引。
+主要使用关键字存储和解析值
+>>> tel = {'jack': 4098, 'sape': 4139}
+>>> tel['guido'] = 4127
+>>> tel
+{'sape': 4139, 'guido': 4127, 'jack': 4098}
+>>> tel['jack']
+4098
+>>> del tel['sape']
+>>> tel['irv'] = 4127
+>>> tel
+{'guido': 4127, 'irv': 4127, 'jack': 4098}
+>>> list(tel.keys())
+['irv', 'guido', 'jack']
+>>> sorted(tel.keys())
+['guido', 'irv', 'jack']
+>>> 'guido' in tel
+True
+>>> 'jack' not in tel
+False
+
+dict() 构造函数可以直接从键值对序列里创建字典。
+
+当关键字是简单字符串时，有时直接通过关键字参数来指定键值对更方便
+
+>>> dict(sape=4139, guido=4127, jack=4098)
+{'sape': 4139, 'jack': 4098, 'guido': 4127}
+
+## 循环的技巧
+当在
