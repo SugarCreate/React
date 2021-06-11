@@ -629,3 +629,103 @@ pear
             filtered_data.append(value)
     
     filtered_data
+
+### 模块
+模块的出现原因：将程序拆分方便维护，亦或想在不同的程序中使用一个便捷的函数。
+把定义放在文件里，并在脚本或解释器交互模式实例中使用它们。这样的文件就叫做模块。
+__name__ 获得模块名。
+>>> import fibo
+>>> fibo.__name__
+'fibo'
+
+dir()用于查找模块定义名称,它返回一个排序过的字符串列表。
+
+dir() 不会列出内置函数和变量的名称。如果你想要这些，它们的定义是在标准模块 builtins 中:
+
+### 输入和输出
+
+花括号和其中的字符（称为格式字段）将替换为传递给 str.format() 方法的对象
+str.format() 方法的基本用法如下所示:
+
+>>>
+>>> print('We are the {} who say "{}!"'.format('knights', 'Ni'))
+We are the knights who say "Ni!"
+
+### 读写文件
+open() 返回一个 file object ,最常用的有两个参数：open(filename, mode)
+
+>>> f = open('workfile', 'w')
+'r' 只读
+'w' 只能写入(已存在的同名文件会被删除)
+'a' 打开文件以追加内容，任何写入的数据流会添加到文件的末尾
+'r+' 打开文件进行读写
+
+在文本模式下读取时，默认会把平台特定的行结束符 (Unix 上的 \n, Windows 上的 \r\n) 转换为 \n。在文本模式下写入时，默认会把出现的 \n 转换回平台特定的结束符。这样在幕后修改文件数据对文本文件来说没有问题，但是会破坏二进制数据例如 JPEG 或 EXE 文件中的数据。请一定要注意在读写此类文件时应使用二进制模式。
+
+如果你没有使用 with 关键字，那么你应该调用 f.close() 来关闭文件并立即释放它使用的所有系统资源。
+一定要显式的关闭文件。
+
+要从文件中读取行，你可以循环遍历文件对象
+>>> for line in f:
+        print(line, end='')
+This is the first line of the file.
+Second line of the file
+
+以列表形式读取文件中的所有行，可以使用list(f) 或 f.readlines()
+f.write('string') 会把字符串写入到文件中，并返回写入的字符数
+
+
+在写入其他类型的对象之前，需要先把它们转化为字符串（在文本模式下）或者字节对象（在二进制模式下）:
+>>> value = ('the answer', 42)
+>>> s = str(value)  # convert the tuple to string
+>>> f.write(s)
+18
+
+### 使用 json 保存结构化的数据
+ JSON (JavaScript Object Notation)
+json 标准模块可以采用python 数据层次结构，并将它转化为字符串表示形式。这个过程成为 serializing. 从字符串表示中重构数据成为 deserializing
+
+dumps()函数变体叫做dump(), 它只是将对象序列化为 text file。因此，如果if 是一个 text file对象
+json.dump(x, f)
+
+要再次解码, 发是一个打开的以供阅读的text file 对象
+x = json.load(f)
+
+简单的序列化技术可以处理列表和字典, json 序列化任意类的实例时需要额外的额外的努力。
+
+
+### 错误和异常
+语法错误和异常
+语法错误又称为解析错误，SyntaxError
+
+异常，即使语句或表达式在语法上是正确的，但在尝试执行时，它仍可能引发错误。在执行时检测到的错误被称为 异常。
+处理异常
+```
+while True:
+    try:
+        x = int("PLLLLLLLLLEE")
+        break
+    except ValueError:
+        print("aaaaaaaaaaaa")
+```
+首先，执行 try 子句 （try 和 except 关键字之间的（多行）语句）。
+
+如果没有异常发生，则跳过 except 子句 并完成 try 语句的执行。
+
+如果在执行 try 子句时发生了异常，则跳过该子句中剩下的部分。 然后，如果异常的类型和 except 关键字后面的异常匹配，则执行 except 子句，然后继续执行 try 语句之后的代码。
+
+如果发生的异常和 except 子句中指定的异常不匹配，则将其传递到外部的 try 语句中；如果没有找到处理程序，则它是一个 未处理异常，执行将停止并显示如上所示的消息。
+
+raise 语句允许强制抛出异常
+raise 唯一的参数就是排除的异常，这个参数必须是一个实例或是一个异常类（派生自Exception 的类）如果传递的是一个异常类，它将通过调用没有参数的构造函数来隐式实例化
+raise ValueError ## shorthand for 'raise ValueError'
+
+用户自定义异常类
+class Error(Exception):
+    pass
+定义清理操作
+try:
+    raise KeeeError
+finally:
+    print('adad')
+
