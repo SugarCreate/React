@@ -836,3 +836,112 @@ x = MyClass()
 (3.0, -4.5)
 
 ### 实例对象
+实例对象的唯一理解是属性的引用。两种有效的属性名：数据属性和方法
+属性 对应 C++ 的数据成员。数据属性不用声明；像局部变量一样，它们将在第一次被赋值时产生。
+```
+x.counter = 1
+
+```
+实例属性引用称为方法。 方法 “从属于” 对象的函数。例如列表对象具有 append, insert, sort 等方法。
+
+#### 方法对象
+x.f()
+通常，方法在被绑定后立即被调用
+方法的特殊之处在于，实例对象会作为函数的第一个参数传入。
+调用x.f()相当于 MyClass.f(x)。 调用一个具有n个参数的方法 就相当于调用再多一个参数的对应函数，这个参数值方法所属实例对象，位置正在其他参数之前
+
+细节： 当一个实例的非数据属性被引用时，将搜索实例所属的类。 如果名称表示一个属于函数对象的有效类属性，会通过合并打包（指向）实例对象和函数对象到一个抽象对抽象中的方式来创建一个方法对象。这个抽象对象就是方法对象。当附带参数列表调用方法对象时，将基于实例对象和参数列表构建一个新的参数列表，并使用这个新参数列表调用相应的函数对象。
+
+### 类和实例变量
+
+实例变量用于每个实例的唯一数据，而类变量用于类的所有实例共享的属性和方法。
+```
+class Dog:
+    kind = 'canie'  # class variable shared by all instances
+
+    def __init__(self, name):
+        self.name = name    # instance variable unique to each instance
+```
+
+ 正如 名称和对象 中已讨论过的, 共享数据可能在涉及 mutable 对象例如列表和字典的时候导致令人惊讶的结果，例如以下代码中的 tricks 列表不应该对用作类变量，因为所有的Dog实例将只共享一个单独的列表：
+class Dog:
+
+    tricks = []             # mistaken use of a class variable
+
+    def __init__(self, name):
+        self.name = name
+
+    def add_trick(self, trick):
+        self.tricks.append(trick)
+
+>>> d = Dog('Fido')
+>>> e = Dog('Buddy')
+>>> d.add_trick('roll over')
+>>> e.add_trick('play dead')
+>>> d.tricks                # unexpectedly shared by all dogs
+['roll over', 'play dead']
+
+正确的类设计应该使用实例变量:
+
+class Dog:
+
+    def __init__(self, name):
+        self.name = name
+        self.tricks = []    # creates a new empty list for each dog
+
+    def add_trick(self, trick):
+        self.tricks.append(trick)
+
+>>> d = Dog('Fido')
+>>> e = Dog('Buddy')
+>>> d.add_trick('roll over')
+>>> e.add_trick('play dead')
+>>> d.tricks
+['roll over']
+>>> e.tricks
+['play dead']
+
+### 补充说明
+数据属性会覆盖掉具有相同名称的方法属性；为了避免会在大型程序中导致难以发现的错误的意外名称冲突，明智的做法是使用某种约定来最小化冲突的发生几率。 可能的约定包括方法名称使用大写字母，属性名称加上独特的短字符串前缀（或许只加一个下划线），或者是用动词来命名方法，而用名词来命名数据属性。
+
+数据属性可以被方法以及一个对象的普通用户（“客户端”）所引用。 换句话说，类不能用于实现纯抽象数据类型。 实际上，在 Python 中没有任何东西能强制隐藏数据 — 它是完全基于约定的。 （而在另一方面，用 C 语言编写的 Python 实现则可以完全隐藏实现细节，并在必要时控制对象的访问；此特性可以通过用 C 编写 Python 扩展来使用。）
+
+客户端应当谨慎地使用数据属性 — 客户端可能通过直接操作数据属性的方式破坏由方法所维护的固定变量。 请注意客户端可以向一个实例对象添加他们自己的数据属性而不会影响方法的可用性，只要保证避免名称冲突 — 再次提醒，在此使用命名约定可以省去许多令人头痛的麻烦。
+
+在方法内部引用数据属性（或其他方法！）并没有简便方式。 我发现这实际上提升了方法的可读性：当浏览一个方法代码时，不会存在混淆局部变量和实例变量的机会。
+
+方法的第一个参数常常被命名为 self。 这也不过就是一个约定: self 这一名称在 Python 中绝对没有特殊含义。 但是要注意，不遵循此约定会使得你的代码对其他 Python 程序员来说缺乏可读性，而且也可以想像一个 类浏览器 程序的编写可能会依赖于这样的约定。
+
+任何一个作为类属性的函数都为该类的实例定义了一个相应方法。 函数定义的文本并非必须包含于类定义之内：将一个函数对象赋值给一个局部变量也是可以的。 例如:
+
+# Function defined outside the class
+def f1(self, x, y):
+    return min(x, x+y)
+
+class C:
+    f = f1
+
+    def g(self):
+        return 'hello world'
+
+    h = g
+
+现在 f, g 和 h 都是 C 类的引用函数对象的属性，因而它们就都是 C 的实例的方法 — 其中 h 完全等同于 g。 但请注意，本示例的做法通常只会令程序的阅读者感到迷惑。
+
+方法可以通过使用 self 参数的方法属性调用其他方法:
+
+class Bag:
+    def __init__(self):
+        self.data = []
+
+    def add(self, x):
+        self.data.append(x)
+
+    def addtwice(self, x):
+        self.add(x)
+        self.add(x)
+
+方法可以通过与普通函数相同的方式引用全局名称。 与方法相关联的全局作用域就是包含其定义的模块。 （类永远不会被作为全局作用域。） 虽然我们很少会有充分的理由在方法中使用全局作用域，但全局作用域存在许多合法的使用场景：举个例子，导入到全局作用域的函数和模块可以被方法所使用，在其中定义的函数和类也一样。 通常，包含该方法的类本身是在全局作用域中定义的，而在下一节中我们将会发现为何方法需要引用其所属类的很好的理由。
+
+每个值都是一个对象，因此具有 类 （也称为 类型），并存储为 object.__class__ 。
+
