@@ -1,14 +1,15 @@
 import json
 
 datas = [
+ ['节点Id', '节点描述', '父节点'],
  ["root", "根节点", "root", None],
  ["node1", "一级节点1", "root", "root"],
  ["node2", "一级节点2", "root", "root"],
- ["node11", "二级节点11", "root", "node1"],
- ["node12", "二级节点12", "root", "node1"],
- ["node21", "二级节点21", "root", "node2"],
- ["node22", "二级节点22", "root", "node2"],
+ ["a", "aname", "a", None],
+ ["node1", "node1", "a", "a"],
+ ["node2", "node2", "a", "a"],
 ]
+
 
 class Node(object):
     
@@ -46,3 +47,6 @@ print(root)
 tree = root.get_nodes()
 print(json.dumps(tree, indent=4))
 
+
+
+https://www.jb51.net/article/167316.htm
