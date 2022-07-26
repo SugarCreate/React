@@ -26,3 +26,6 @@ vue-antd-admin/vue-antd-admin-0.7.4/*
 vue-antd-admin/0.7.4.zip
 
 os-project/
+#venv
+python/zabbixCLI-workplace/venv/
+python/zabbixCLI-workplace/contents/venv

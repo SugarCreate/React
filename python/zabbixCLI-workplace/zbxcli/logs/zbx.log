@@ -1,0 +1,2 @@
+2022-07-25 15:58:01,574 api.py [line:29] ERROR：{'code': -32602, 'message': 'Invalid params.', 'data': 'The "apiinfo.version" method must be called without the "auth" parameter.'}
+2022-07-25 15:59:37,942 api.py [line:29] ERROR：{'code': -32602, 'message': 'Invalid params.', 'data': 'The "apiinfo.version" method must be called without the "auth" parameter.'}
