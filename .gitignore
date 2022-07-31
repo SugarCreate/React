@@ -29,3 +29,12 @@ os-project/
 #venv
 python/zabbixCLI-workplace/venv/
 python/zabbixCLI-workplace/contents/venv
+# pyc
+*.pyc
+git_push.sh
+
+python/zabbixCLI-workplace/contents/mysite/mysite/__pycache__/settings.cpython-38.pyc
+python/zabbixCLI-workplace/contents/mysite/mysite/__pycache__/urls.cpython-38.pyc
+python/zabbixCLI-workplace/contents/mysite/db.sqlite3
+.gitignore
+**/migrations/*
