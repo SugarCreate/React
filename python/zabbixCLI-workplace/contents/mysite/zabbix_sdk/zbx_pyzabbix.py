@@ -22,6 +22,7 @@ class ZBXAUTH(object):
         except ZabbixAPIException as e:
             print("Error messages: {}".format(e))
 
+
 if __name__ == '__main__':
     cls = ZBXAUTH()
     cls.get_zbx_token()

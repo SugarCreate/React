@@ -1,5 +1,5 @@
+*.pyc
 **__pycache__/*
-python/__pycache__/interval.cpython-36.pyc
 google-cloud-app/env/*
 .DS_Store
 node_modules/
