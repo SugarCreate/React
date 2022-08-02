@@ -3,6 +3,7 @@ from pyzabbix import ZabbixAPIException
 
 ZABBIX = {
     'api': 'http://47.98.200.30:8080/',
+    # 'api': 'http://zabbix.sugarcreate.org.cn/',
     'user': 'Admin',
     'pass': 'zabbix'
 }
@@ -19,6 +20,7 @@ class ZBXAUTH(object):
             zapi = ZabbixAPI(self.zbx_api)
             zapi.login(self.zbx_user, self.zbx_pass)
             print("zabbix API Version: {} .".format(zapi.api_version()))
+            return zapi
         except ZabbixAPIException as e:
             print("Error messages: {}".format(e))
 
